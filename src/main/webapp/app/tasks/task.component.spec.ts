@@ -1,29 +1,29 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { AppComponent } from './app.component';
-import { TaskService } from './tasks/task.service';
+import { TaskComponent } from './task.component';
+import { TaskService } from './task.service';
 
-describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
-  let component: AppComponent;
+describe('TaskComponent', () => {
+  let fixture: ComponentFixture<TaskComponent>;
+  let component: TaskComponent;
   let taskService: jasmine.SpyObj<TaskService>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [TaskComponent],
       providers: [{
         provide: 'TaskService',
         useValue: jasmine.createSpyObj('TaskService', ['getAll'])
       }]
-    }).overrideTemplate(AppComponent, '')
+    }).overrideTemplate(TaskComponent, '')
       .compileComponents();
 
     taskService = TestBed.get('TaskService');
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(TaskComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -40,7 +40,7 @@ describe('AppComponent', () => {
   it('should init the tasks', () => {
     // given
     const tasks$ = of([]);
-    taskService.getAll.and.returnValue(tasks$);
+    taskService.getAllByUsername.and.returnValue(tasks$);
 
     // when
     component.ngOnInit();
@@ -52,26 +52,26 @@ describe('AppComponent', () => {
   it('should reload the tasks after task creation', () => {
     // given
     const tasks$ = of([]);
-    taskService.getAll.and.returnValue(tasks$);
+    taskService.getAllByUsername.and.returnValue(tasks$);
 
     // when
     component.created();
 
     // then
     expect(component.tasks$).toEqual(tasks$);
-    expect(taskService.getAll).toHaveBeenCalled();
+    expect(taskService.getAllByUsername).toHaveBeenCalled();
   });
 
   it('should reload the tasks after task deletion', () => {
     // given
     const tasks$ = of([]);
-    taskService.getAll.and.returnValue(tasks$);
+    taskService.getAllByUsername.and.returnValue(tasks$);
 
     // when
     component.deleted();
 
     // then
     expect(component.tasks$).toEqual(tasks$);
-    expect(taskService.getAll).toHaveBeenCalled();
+    expect(taskService.getAllByUsername).toHaveBeenCalled();
   });
 });

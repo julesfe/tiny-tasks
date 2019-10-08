@@ -1,10 +1,19 @@
 package com.coyoapp.tinytask.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.coyoapp.tinytask.domain.Task;
+import com.coyoapp.tinytask.domain.User;
 import com.coyoapp.tinytask.dto.TaskRequest;
 import com.coyoapp.tinytask.dto.TaskResponse;
 import com.coyoapp.tinytask.exception.TaskNotFoundException;
 import com.coyoapp.tinytask.repository.TaskRepository;
+import com.coyoapp.tinytask.repository.UserRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +26,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 public class DefaultTaskServiceTest {
 
   @Rule
@@ -30,6 +33,9 @@ public class DefaultTaskServiceTest {
 
   @Mock
   private TaskRepository taskRepository;
+
+  @Mock
+  private UserRepository userRepository;
 
   @Mock
   private MapperFacade mapperFacade;
@@ -70,6 +76,26 @@ public class DefaultTaskServiceTest {
     assertThat(actualTasks).contains(taskResponse);
   }
 
+
+  @Test
+  public void shouldGetTasksByUsername() {
+    // given
+    Task task = mock(Task.class);
+    TaskResponse taskResponse = mock(TaskResponse.class);
+    List<Task> tasks = Arrays.asList(task);
+    User user = new User("123", "test", "hunter2", tasks);
+    when(taskRepository.findAllTasksByUser(user)).thenReturn(Optional.of(tasks));
+    given(userRepository.findByUsername("test"))
+      .willReturn(Optional.of(new User("123", "test", "hunter2", tasks)));
+    when(mapperFacade.map(task, TaskResponse.class)).thenReturn(taskResponse);
+
+    // when
+    List<TaskResponse> actualTasks = objectUnderTest.getTasksByUsername("test");
+
+    // then
+    assertThat(actualTasks).contains(taskResponse);
+  }
+
   @Test
   public void shouldDeleteTask() {
     // given
@@ -88,7 +114,6 @@ public class DefaultTaskServiceTest {
   public void shouldNotDeleteTask() {
     // given
     String id = "task-id";
-    when(taskRepository.findById(id)).thenReturn(Optional.empty());
 
     // when
     objectUnderTest.deleteTask(id);
