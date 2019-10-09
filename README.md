@@ -32,6 +32,11 @@ Run `yarn lint` to lint your application and `yarn test` to execute the unit tes
 The backend was generated with [Spring Initializr](https://start.spring.io/). Run `docker-compose up -d` to launch
 the PostgreSQL docker container. Run `./gradlew bootRun` for a dev server. The server is available under `http://localhost:8080/`.
 
+Run `docker exec -it tiny-tasks_postgres_1 psql -U tiny_task` to get the PostgreSQL console.
+Then run `\d` to see a list of relations, `\d+ task` to see the table task. When executing statements, it is necessary to end 
+them with a semicolon i.e. `select * from users;` or they will not execute since Postgres does not know that the statement ended.
+`\q` or control+d to quit the console.
+
 Run `./gradlew test` to execute the tests.
 
 ## Let's go
