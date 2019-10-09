@@ -8,16 +8,19 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "users")
-@Table
+@Entity
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,13 +28,22 @@ import org.hibernate.annotations.GenericGenerator;
 public class User implements Serializable {
 
   @Id
-  @GeneratedValue(generator = "uuid2")
-  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false, updatable = false)
   private String id;
 
+
+  @Column(name = "email", nullable = false, updatable = false)
+  @Email(message = "Please provide a valid email")
+  @NotEmpty(message = "Please provide an email")
+  private String email;
+
+  @Column(name = "username")
+  @NotEmpty(message = "Please provide a username")
   private String username;
 
+  @Column(name = "password")
+  @Transient
   private String password;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
