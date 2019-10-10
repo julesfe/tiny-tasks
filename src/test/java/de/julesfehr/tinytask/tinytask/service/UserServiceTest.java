@@ -9,7 +9,7 @@ import de.julesfehr.tinytask.domain.Task;
 import de.julesfehr.tinytask.domain.User;
 import de.julesfehr.tinytask.repository.UserRepository;
 import de.julesfehr.tinytask.service.UserDetailsImpl;
-import de.julesfehr.tinytask.service.UserDetailsServiceImpl;
+import de.julesfehr.tinytask.service.UserService;
 import java.util.Arrays;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
@@ -21,10 +21,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserDetailsServiceImplTest {
+public class UserServiceTest {
 
   @InjectMocks
-  private UserDetailsServiceImpl userDetailsService;
+  private UserService userDetailsService;
 
   @Mock
   private UserRepository userRepository;
@@ -33,7 +33,7 @@ public class UserDetailsServiceImplTest {
   public void shouldReturnUserDetailsForGivenUser() {
     Task task = mock(Task.class);
     given(userRepository.findByUsername(anyString()))
-      .willReturn(Optional.of(new User("123", "test", "hunter2", Arrays.asList(task))));
+      .willReturn(Optional.of(new User("123", "test@testmail.de", "test", "hunter2", Arrays.asList(task))));
 
     UserDetails result = userDetailsService.loadUserByUsername("test");
 
