@@ -28,7 +28,7 @@ public class UserServiceTest {
   private UserRepository userRepository;
 
   @Test
-  public void shouldReturnUserDetailsForGivenUser() {
+  public void should_return_user_for_given_user() {
     Task task = mock(Task.class);
     given(userRepository.findByUsername(anyString()))
       .willReturn(
