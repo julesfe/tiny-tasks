@@ -45,7 +45,7 @@ public class DefaultTaskServiceTest {
   private DefaultTaskService objectUnderTest;
 
   @Test
-  public void shouldCreateTask() {
+  public void should_create_task() {
     // given
     TaskRequest taskRequest = mock(TaskRequest.class);
     Task task = mock(Task.class);
@@ -63,7 +63,7 @@ public class DefaultTaskServiceTest {
   }
 
   @Test
-  public void shouldGetTasks() {
+  public void should_get_tasks() {
     // given
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
@@ -79,7 +79,7 @@ public class DefaultTaskServiceTest {
 
 
   @Test
-  public void shouldGetTasksByUsername() {
+  public void should_get_tasks_by_username() {
     // given
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
@@ -98,7 +98,7 @@ public class DefaultTaskServiceTest {
   }
 
   @Test
-  public void shouldDeleteTask() {
+  public void should_delete_task() {
     // given
     String id = "task-id";
     Task task = mock(Task.class);
@@ -112,7 +112,7 @@ public class DefaultTaskServiceTest {
   }
 
   @Test(expected = TaskNotFoundException.class)
-  public void shouldNotDeleteTask() {
+  public void should_not_delete_task() {
     // given
     String id = "task-id";
 

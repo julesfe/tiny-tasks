@@ -30,7 +30,7 @@ public class TaskRepositoryTest {
   TaskRepository taskRepository;
 
   @Test
-  public void shouldReturnTaskEntityForGivenUser() {
+  public void should_return_task_entity_for_given_user() {
     Task task = givenTask(new Task(null, "taskName", Instant.now()));
     User user = new User("123", "test@testmail.de", "testUser", "hunter2", null);
     user = givenUser(user);
