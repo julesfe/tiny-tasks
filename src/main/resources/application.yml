@@ -12,4 +12,4 @@ spring:
 
 logging:
   level:
-    com.coyoapp.tinytask: DEBUG
+    de.julesfehr.tinytask: DEBUG
