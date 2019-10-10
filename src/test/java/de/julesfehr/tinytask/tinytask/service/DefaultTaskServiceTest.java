@@ -84,10 +84,10 @@ public class DefaultTaskServiceTest {
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
     List<Task> tasks = Arrays.asList(task);
-    User user = new User("123", "test", "hunter2", tasks);
+    User user = new User("123", "test@testmail.de", "test", "hunter2", tasks);
     when(taskRepository.findAllTasksByUser(user)).thenReturn(Optional.of(tasks));
     given(userRepository.findByUsername("test"))
-      .willReturn(Optional.of(new User("123", "test", "hunter2", tasks)));
+      .willReturn(Optional.of(new User("123", "test@testmail.de", "test", "hunter2", tasks)));
     when(mapperFacade.map(task, TaskResponse.class)).thenReturn(taskResponse);
 
     // when

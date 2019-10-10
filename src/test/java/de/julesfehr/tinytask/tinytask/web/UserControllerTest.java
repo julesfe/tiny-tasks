@@ -24,7 +24,8 @@ public class UserControllerTest extends BaseControllerTest {
     // given
     String username = "test";
     String password = "hunter2";
-    User user = new User(null, username, password, null);
+    String email = "test@testmail.de";
+    User user = new User(null, email, username, password, null);
     given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
 
     // when
@@ -55,7 +56,8 @@ public class UserControllerTest extends BaseControllerTest {
     // given
     String username = "test";
     String password = "hunter2";
-    User user = new User(null, username, password, null);
+    String email = "test@testmail.de";
+    User user = new User(null, email, username, password, null);
 
     // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)

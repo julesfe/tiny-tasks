@@ -32,7 +32,7 @@ public class TaskRepositoryTest {
   @Test
   public void shouldReturnTaskEntityForGivenUser() {
     Task task = givenTask(new Task(null, "taskName", Instant.now()));
-    User user = new User("123", "testUser", "hunter2", null);
+    User user = new User("123", "test@testmail.de", "testUser", "hunter2", null);
     user = givenUser(user);
     task = givenTask(task);
     testEntityManager.find(Task.class, task.getId())

@@ -35,7 +35,7 @@ public class TaskControllerTest extends BaseControllerTest {
     // given
     String id = "task-id";
     String name = "task-name";
-    User user = new User(null, "test", "hunter2", null);
+    User user = new User(null, "test@testmail.de", "test", "hunter2", null);
     TaskRequest taskRequest = TaskRequest.builder().name(name).user(user).build();
     TaskResponse taskResponse = TaskResponse.builder().id(id).name(name).build();
     when(taskService.createTask(taskRequest)).thenReturn(taskResponse);
