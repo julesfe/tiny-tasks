@@ -39,9 +39,10 @@ them with a semicolon i.e. `select * from users;` or they will not execute since
 
 Run `./gradlew test` to execute the tests.
 
-## Let's go
+## To-Do
 
-As you can see, there's a lot to do. Just pick one of the [issues](https://github.com/mindsmash/tiny-tasks/issues) and
-start coding. Also, do not hesitate to contact us if you run into any problems. We are here to help.
+As you can see, there's a lot to do. Just pick one of the [issues](https://github.com/mindsmash/tiny-tasks/issues).
 
-You can simply fork this repository and start working on _TinyTasks_. Please create a pull request after finishing your work.
+### Commits
+
+This project uses [gitmoji](https://gitmoji.carloscuesta.me/) for commit-messages.
