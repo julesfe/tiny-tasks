@@ -8,7 +8,6 @@ import static org.mockito.Mockito.mock;
 import de.julesfehr.tinytask.domain.Task;
 import de.julesfehr.tinytask.domain.User;
 import de.julesfehr.tinytask.repository.UserRepository;
-import de.julesfehr.tinytask.service.UserDetailsImpl;
 import de.julesfehr.tinytask.service.UserService;
 import java.util.Arrays;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -33,11 +31,13 @@ public class UserServiceTest {
   public void shouldReturnUserDetailsForGivenUser() {
     Task task = mock(Task.class);
     given(userRepository.findByUsername(anyString()))
-      .willReturn(Optional.of(new User("123", "test@testmail.de", "test", "hunter2", Arrays.asList(task))));
+      .willReturn(
+        Optional.of(new User("123", "test@testmail.de", "test", "hunter2", Arrays.asList(task))));
 
-    UserDetails result = userDetailsService.loadUserByUsername("test");
+    User result = userDetailsService.findByUsername("test");
 
-    assertThat(result).isEqualTo(new UserDetailsImpl("123", "test", "hunter2"));
+    assertThat(result)
+      .isEqualTo(new User("123", "test@testmail.de", "test", "hunter2", Arrays.asList(task)));
   }
 
   @Test(expected = EntityNotFoundException.class)
@@ -45,6 +45,6 @@ public class UserServiceTest {
     given(userRepository.findByUsername(anyString()))
       .willReturn(Optional.empty());
 
-    UserDetails result = userDetailsService.loadUserByUsername("testUser");
+    User result = userDetailsService.findByUsername("testUser");
   }
 }
