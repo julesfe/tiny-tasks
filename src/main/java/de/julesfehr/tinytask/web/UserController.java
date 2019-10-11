@@ -32,7 +32,8 @@ public class UserController {
     log.debug("registering User {}", user);
   }
 
-  @GetMapping("/confirm")
+  @GetMapping
+    ("/confirm")
   public void confirm(@RequestBody User user) {
     log.debug("confirming User {}", user);
   }
