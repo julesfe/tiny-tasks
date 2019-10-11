@@ -1,9 +1,6 @@
 # TinyTasks
 
-Welcome to _TinyTasks_, the most basic task management app in the whole wide world - no fancy UI and a
-very limited set of features. Fortunately, you are here to save the day and improve parts of _TinyTasks_.
-Feel free to focus on a single feature or aspect of the application. You can find a list of open issues in
-the [issue section](https://github.com/mindsmash/tiny-tasks/issues) of this repository.
+(very) basic task management app.
 
 ## Development
 
@@ -39,10 +36,17 @@ them with a semicolon i.e. `select * from users;` or they will not execute since
 
 Run `./gradlew test` to execute the tests.
 
-## To-Do
-
-As you can see, there's a lot to do. Just pick one of the [issues](https://github.com/mindsmash/tiny-tasks/issues).
 
 ### Commits
 
 This project uses [gitmoji](https://gitmoji.carloscuesta.me/) for commit-messages.
+
+Whenever you add a new feature that's worth commiting, commit. 
+You added a working method? Commit. You fixed a typo? Commit. 
+You fixed a file wrong indentation? Commit. 
+There's nothing wrong commiting small changes, 
+as soon as the commit is relevant.
+
+Making small commits allows you to use very powerful tools like git-bisect.
+
+### [To-Do](https://github.com/mindsmash/tiny-tasks/issues)
