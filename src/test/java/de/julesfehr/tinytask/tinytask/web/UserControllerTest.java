@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import de.julesfehr.tinytask.domain.User;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -26,7 +26,7 @@ public class UserControllerTest extends BaseControllerTest {
     String password = "hunter2";
     String email = "test@testmail.de";
     User user = new User(null, email, username, password, null);
-    given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
+    given(userService.findByUsername(anyString())).willReturn(user);
 
     // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)
@@ -40,7 +40,7 @@ public class UserControllerTest extends BaseControllerTest {
   @Test
   public void shouldReturnStatuscode401WhenLoginWasNotSuccessful() throws Exception {
     // given
-    given(userRepository.findByUsername(anyString())).willReturn(Optional.empty());
+    given(userService.findByUsername(anyString())).willThrow(new EntityNotFoundException());
 
     // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)
