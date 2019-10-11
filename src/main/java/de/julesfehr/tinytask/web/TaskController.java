@@ -2,8 +2,8 @@ package de.julesfehr.tinytask.web;
 
 import de.julesfehr.tinytask.dto.TaskRequest;
 import de.julesfehr.tinytask.dto.TaskResponse;
-import de.julesfehr.tinytask.repository.UserRepository;
 import de.julesfehr.tinytask.service.TaskService;
+import de.julesfehr.tinytask.service.UserService;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -28,13 +28,12 @@ public class TaskController {
 
   private final TaskService taskService;
 
-  private final UserRepository userRepository;
+  private final UserService userService;
 
   @PostMapping
   public TaskResponse createTask(@RequestBody @Valid TaskRequest taskRequest) {
     log.debug("createTask(createTask={})", taskRequest);
-    taskRequest.setUser(userRepository.findByUsername(taskRequest.getUser().getUsername())
-      .orElseThrow(EntityNotFoundException::new));
+    taskRequest.setUser(userService.findByUsername(taskRequest.getUser().getUsername()));
     return taskService.createTask(taskRequest);
   }
 
