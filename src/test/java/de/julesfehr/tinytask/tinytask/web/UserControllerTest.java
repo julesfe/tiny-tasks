@@ -20,51 +20,42 @@ public class UserControllerTest extends BaseControllerTest {
   private static final String PATH_REGISTRATION = "/login";
 
   @Test
-  public void shouldReturnStatuscode200WhenLoginWasSuccessful() throws Exception {
-    // given
+  public void should_return_status_code_200_when_login_was_successful() throws Exception {
     String username = "test";
     String password = "hunter2";
     String email = "test@testmail.de";
     User user = new User(null, email, username, password, null);
     given(userService.findByUsername(anyString())).willReturn(user);
 
-    // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content("{\"username\":\"test\",\"password\":\"hunter2\"}"));
 
-    // then
     actualResult.andExpect(status().isOk());
   }
 
   @Test
-  public void shouldReturnStatuscode401WhenLoginWasNotSuccessful() throws Exception {
-    // given
+  public void should_return_status_code_401_when_login_was_not_successful() throws Exception {
     given(userService.findByUsername(anyString())).willThrow(new EntityNotFoundException());
 
-    // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content("{\"username\":\"testUser\",\"password\":\"hunter2\"}"));
 
-    // then
     actualResult.andExpect(status().is(401));
   }
 
   @Test
-  public void shouldReturnStatuscode200WhenRegistrationWasSuccessful() throws Exception {
-    // given
+  public void should_return_status_code_200_when_registration_was_successful() throws Exception {
     String username = "test";
     String password = "hunter2";
     String email = "test@testmail.de";
     User user = new User(null, email, username, password, null);
 
-    // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content("{\"username\":\"test\",\"password\":\"hunter2\"}"));
 
-    // then
     actualResult.andExpect(status().isOk());
   }
 
