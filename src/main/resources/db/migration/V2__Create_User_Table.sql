@@ -3,4 +3,3 @@ CREATE TABLE "users" (
     username VARCHAR(64) UNIQUE NOT NULL,
     password VARCHAR (128) NOT NULL
 );
-INSERT INTO "users" (id, username, password) VALUES ('1', 'test', 'hunter2');
