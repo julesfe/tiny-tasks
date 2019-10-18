@@ -28,10 +28,9 @@ import lombok.NoArgsConstructor;
 public class User implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, updatable = false)
   private String id;
-
 
   @Column(name = "email", nullable = false, updatable = false)
   @Email(message = "Please provide a valid email")
