@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import de.julesfehr.tinytask.domain.Task;
 import de.julesfehr.tinytask.domain.User;
@@ -22,7 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class UserServiceTest {
 
   @InjectMocks
-  private UserService userDetailsService;
+  private UserService userService;
 
   @Mock
   private UserRepository userRepository;
@@ -32,12 +34,21 @@ public class UserServiceTest {
     Task task = mock(Task.class);
     given(userRepository.findByUsername(anyString()))
       .willReturn(
-        Optional.of(new User("123", "test@testmail.de", "test", "hunter2", Arrays.asList(task))));
+        Optional.of(new User(123, "test@testmail.de", "test", "hunter2", Arrays.asList(task))));
 
-    User result = userDetailsService.findByUsername("test");
+    User result = userService.findByUsername("test");
 
     assertThat(result)
-      .isEqualTo(new User("123", "test@testmail.de", "test", "hunter2", Arrays.asList(task)));
+      .isEqualTo(new User(123, "test@testmail.de", "test", "hunter2", Arrays.asList(task)));
+  }
+
+  @Test
+  public void should_save_user() {
+    User user = new User(123, "test@testmail.de", "test", "hunter2", null);
+
+    userService.saveUser(user);
+
+    verify(userRepository, times(1)).save(user);
   }
 
   @Test(expected = EntityNotFoundException.class)
@@ -45,6 +56,6 @@ public class UserServiceTest {
     given(userRepository.findByUsername(anyString()))
       .willReturn(Optional.empty());
 
-    User result = userDetailsService.findByUsername("testUser");
+    User result = userService.findByUsername("testUser");
   }
 }
