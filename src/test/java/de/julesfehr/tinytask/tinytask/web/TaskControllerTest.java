@@ -21,7 +21,6 @@ import de.julesfehr.tinytask.dto.TaskRequest;
 import de.julesfehr.tinytask.dto.TaskResponse;
 import de.julesfehr.tinytask.exception.TaskNotFoundException;
 import java.util.Collections;
-import java.util.Optional;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -31,11 +30,11 @@ public class TaskControllerTest extends BaseControllerTest {
   private static final String PATH = "/tasks";
 
   @Test
-  public void shouldCreateTask() throws Exception {
+  public void should_create_task() throws Exception {
     // given
     String id = "task-id";
     String name = "task-name";
-    User user = new User(null, "test@testmail.de", "test", "hunter2", null);
+    User user = new User(1, "test@testmail.de", "test", "hunter2", null);
     TaskRequest taskRequest = TaskRequest.builder().name(name).user(user).build();
     TaskResponse taskResponse = TaskResponse.builder().id(id).name(name).build();
     when(taskService.createTask(taskRequest)).thenReturn(taskResponse);
@@ -57,7 +56,7 @@ public class TaskControllerTest extends BaseControllerTest {
   }
 
   @Test
-  public void shouldGetTasks() throws Exception {
+  public void should_get_tasks() throws Exception {
     // given
     String id = "task-id";
     String name = "task-name";
@@ -78,7 +77,7 @@ public class TaskControllerTest extends BaseControllerTest {
   }
 
   @Test
-  public void shouldDeleteTask() throws Exception {
+  public void should_delete_task() throws Exception {
     // given
     String id = "task-id";
 
@@ -94,7 +93,7 @@ public class TaskControllerTest extends BaseControllerTest {
   }
 
   @Test
-  public void shouldNotDeleteTask() throws Exception {
+  public void should_not_delete_task() throws Exception {
     // given
     String id = "unknown-task-id";
     doThrow(new TaskNotFoundException()).when(taskService).deleteTask(id);
