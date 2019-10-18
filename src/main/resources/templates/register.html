@@ -52,9 +52,21 @@
                   aria-hidden="true"></span>
           </div>
 
-          <button type="submit" class="btn btn-primary block full-width m-b">
-            Submit
-          </button>
+          <div class="form-group input-group">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-lock"></span>
+          </span>
+            <input type="password" th:field="*{password}"
+                   placeholder="Password" class="form-control" required/>
+            <span class="glyphicon"
+                  aria-hidden="true"></span>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary block full-width">
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     </div>
