@@ -41,7 +41,6 @@ public class User implements Serializable {
   private String username;
 
   @Column(name = "password")
-  @Transient
   private String password;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
