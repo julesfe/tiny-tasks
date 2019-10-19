@@ -1,9 +1,6 @@
 # TinyTasks
 
-Welcome to _TinyTasks_, the most basic task management app in the whole wide world - no fancy UI and a
-very limited set of features. Fortunately, you are here to save the day and improve parts of _TinyTasks_.
-Feel free to focus on a single feature or aspect of the application. You can find a list of open issues in
-the [issue section](https://github.com/mindsmash/tiny-tasks/issues) of this repository.
+(very) basic task management app.
 
 ## Development
 
@@ -32,11 +29,24 @@ Run `yarn lint` to lint your application and `yarn test` to execute the unit tes
 The backend was generated with [Spring Initializr](https://start.spring.io/). Run `docker-compose up -d` to launch
 the PostgreSQL docker container. Run `./gradlew bootRun` for a dev server. The server is available under `http://localhost:8080/`.
 
+Run `docker exec -it tiny-tasks_postgres_1 psql -U tiny_task` to get the PostgreSQL console.
+Then run `\d` to see a list of relations, `\d+ task` to see the table task. When executing statements, it is necessary to end 
+them with a semicolon i.e. `select * from users;` or they will not execute since Postgres does not know that the statement ended.
+`\q` or control+d to quit the console.
+
 Run `./gradlew test` to execute the tests.
 
-## Let's go
 
-As you can see, there's a lot to do. Just pick one of the [issues](https://github.com/mindsmash/tiny-tasks/issues) and
-start coding. Also, do not hesitate to contact us if you run into any problems. We are here to help.
+### Commits
 
-You can simply fork this repository and start working on _TinyTasks_. Please create a pull request after finishing your work.
+This project uses [gitmoji](https://gitmoji.carloscuesta.me/) for commit-messages.
+
+Whenever you add a new feature that's worth commiting, commit. 
+You added a working method? Commit. You fixed a typo? Commit. 
+You fixed a file wrong indentation? Commit. 
+There's nothing wrong commiting small changes, 
+as soon as the commit is relevant.
+
+Making small commits allows you to use very powerful tools like git-bisect.
+
+### [To-Do](https://github.com/mindsmash/tiny-tasks/issues)
