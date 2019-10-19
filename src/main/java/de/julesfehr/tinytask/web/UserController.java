@@ -36,13 +36,12 @@ public class UserController {
     BindingResult bindingResult) {
     log.debug("processing registration form for user {}", user.getEmail());
 
-    try {
-      User userExists = userService.findByEmail(user.getEmail());
-      log.debug("user {} already exists", user.getEmail());
+    User userEntity = userService.findByEmail(user.getEmail());
+    if (userEntity != null) {
+      log.debug("user {} already exists", userEntity.getEmail());
       modelAndView.addObject("userExistsMessage", "A user with that email already exists");
       modelAndView.setViewName("register");
-    } catch (Exception e) {
-      log.debug("user {} does not already exist", user.getEmail());
+      bindingResult.reject("userExists");
     }
     if (bindingResult.hasErrors()) {
       modelAndView.setViewName("register");
