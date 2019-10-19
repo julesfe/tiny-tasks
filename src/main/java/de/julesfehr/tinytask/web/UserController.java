@@ -39,7 +39,7 @@ public class UserController {
     User userEntity = userService.findByEmail(user.getEmail());
     if (userEntity != null) {
       log.debug("user {} already exists", userEntity.getEmail());
-      modelAndView.addObject("userExistsMessage", "A user with that email already exists");
+      modelAndView.addObject("userExistsMessage", "A user with that email already exists.");
       modelAndView.setViewName("register");
       bindingResult.reject("userExists");
     }
@@ -48,7 +48,7 @@ public class UserController {
     } else {
       log.debug("saving user {}", user);
       userService.saveUser(user);
-      modelAndView.addObject("confirmationMessage", "registration successful");
+      modelAndView.addObject("confirmationMessage", "Registration successful!");
       modelAndView.setViewName("register");
       log.debug("user {} completed the registration process", user.getEmail());
     }
