@@ -13,7 +13,6 @@ import de.julesfehr.tinytask.repository.UserRepository;
 import de.julesfehr.tinytask.service.UserService;
 import java.util.Arrays;
 import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -51,11 +50,12 @@ public class UserServiceTest {
     verify(userRepository, times(1)).save(user);
   }
 
-  @Test(expected = EntityNotFoundException.class)
-  public void should_throw_exception_when_user_is_not_found() {
+  public void should_return_null_when_user_is_not_found() {
     given(userRepository.findByUsername(anyString()))
       .willReturn(Optional.empty());
 
-    User result = userService.findByUsername("testUser");
+    User result = userService.findByEmail("testUser");
+
+    assertThat(result).isEqualTo(null);
   }
 }
