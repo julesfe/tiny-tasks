@@ -42,7 +42,7 @@ public class TaskRepositoryTest {
 
     Optional<List<Task>> result = taskRepository.findAllTasksByUser(user);
 
-    assertThat(result).isEqualTo(Optional.of(task));
+    assertThat(result).isEqualTo(Optional.of(Arrays.asList(task)));
   }
 
   private User givenUser(User user) {
