@@ -95,17 +95,6 @@ public class UserControllerTest extends BaseControllerTest {
   }
 
   @Test
-  public void should_return_status_code_401_when_login_was_not_successful() throws Exception {
-    given(userService.findByUsername(anyString())).willThrow(new EntityNotFoundException());
-
-    ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)
-      .contentType(MediaType.APPLICATION_JSON_UTF8)
-      .content("{\"username\":\"testUser\",\"password\":\"hunter2\"}"));
-
-    actualResult.andExpect(status().is(401));
-  }
-
-  @Test
   public void should_return_status_code_200_when_registration_was_successful() throws Exception {
     String username = "test";
     String password = "hunter2";
