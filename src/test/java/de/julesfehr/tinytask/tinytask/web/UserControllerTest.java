@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import de.julesfehr.tinytask.domain.User;
-import javax.persistence.EntityNotFoundException;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -57,7 +56,7 @@ public class UserControllerTest extends BaseControllerTest {
     String email = "test@testmail.de";
     String password = "password";
     User user = new User(0, email, username, password, null);
-    given(userService.findByEmail(any())).willThrow(new EntityNotFoundException());
+    given(userService.findByEmail(any())).willReturn(null);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -70,7 +69,7 @@ public class UserControllerTest extends BaseControllerTest {
   public void should_add_confirmation_message_to_model_when_user_has_been_saved() throws Exception {
     String username = "test";
     String email = "test@testmail.de";
-    given(userService.findByEmail(any())).willThrow(new EntityNotFoundException());
+    given(userService.findByEmail(any())).willReturn(null);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
