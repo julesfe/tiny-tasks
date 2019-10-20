@@ -39,7 +39,7 @@ public class UserControllerTest extends BaseControllerTest {
     String username = "test";
     String password = "hunter2";
     String email = "test@testmail.de";
-    User user = new User(1, email, username, password, null);
+    User user = new User(1, email, password, null);
     given(userService.findByEmail(anyString())).willReturn(user);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
@@ -55,7 +55,7 @@ public class UserControllerTest extends BaseControllerTest {
     String username = "test";
     String email = "test@testmail.de";
     String password = "password";
-    User user = new User(0, email, username, password, null);
+    User user = new User(0, email, password, null);
     given(userService.findByEmail(any())).willReturn(null);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
@@ -84,8 +84,8 @@ public class UserControllerTest extends BaseControllerTest {
     String username = "test";
     String password = "hunter2";
     String email = "test@testmail.de";
-    User user = new User(1, email, username, password, null);
-    given(userService.findByUsername(anyString())).willReturn(user);
+    User user = new User(1, email, password, null);
+    given(userService.findByEmail(anyString())).willReturn(user);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)
       .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -99,7 +99,7 @@ public class UserControllerTest extends BaseControllerTest {
     String username = "test";
     String password = "hunter2";
     String email = "test@testmail.de";
-    User user = new User(1, email, username, password, null);
+    User user = new User(1, email, password, null);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_JSON_UTF8)

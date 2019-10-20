@@ -34,11 +34,11 @@ public class TaskControllerTest extends BaseControllerTest {
     // given
     String id = "task-id";
     String name = "task-name";
-    User user = new User(1, "test@testmail.de", "test", "hunter2", null);
+    User user = new User(1, "test@testmail.de", "hunter2", null);
     TaskRequest taskRequest = TaskRequest.builder().name(name).user(user).build();
     TaskResponse taskResponse = TaskResponse.builder().id(id).name(name).build();
     when(taskService.createTask(taskRequest)).thenReturn(taskResponse);
-    given(userService.findByUsername(anyString())).willReturn(user);
+    given(userService.findByEmail(anyString())).willReturn(user);
 
     // when
     ResultActions actualResult = this.mockMvc.perform(post(PATH)

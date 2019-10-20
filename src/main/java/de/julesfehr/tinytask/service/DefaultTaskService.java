@@ -44,10 +44,10 @@ public class DefaultTaskService implements TaskService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<TaskResponse> getTasksByUsername(String username) {
-    log.debug("getTasks for user with username {}", username);
+  public List<TaskResponse> getTasksByEmail(String email) {
+    log.debug("getTasks for user with email {}", email);
     Optional<List<Task>> tasks = taskRepository
-      .findAllTasksByUser(userRepository.findByUsername(username).orElseThrow(
+      .findAllTasksByUser(userRepository.findByEmail(email).orElseThrow(
         EntityNotFoundException::new));
     return tasks.orElse(new ArrayList<Task>())
       .stream().map(this::transformToResponse).collect(toList());
