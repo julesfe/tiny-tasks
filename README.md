@@ -49,4 +49,8 @@ as soon as the commit is relevant.
 
 Making small commits allows you to use very powerful tools like git-bisect.
 
+### CI
+
+[GitHub Actions (beta)](https://github.com/features/actions)
+
 ### [To-Do](https://github.com/mindsmash/tiny-tasks/issues)
