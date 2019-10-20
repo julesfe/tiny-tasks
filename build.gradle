@@ -31,6 +31,7 @@ dependencies {
   implementation 'org.flywaydb:flyway-core'
   implementation 'net.rakugakibox.spring.boot:orika-spring-boot-starter:1.8.0'
   implementation 'org.postgresql:postgresql'
+  implementation 'io.zonky.test:embedded-database-spring-test:1.5.1'
   implementation 'net.sourceforge.nekohtml:nekohtml'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'

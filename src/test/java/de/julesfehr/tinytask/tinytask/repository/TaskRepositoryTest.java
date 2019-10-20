@@ -1,11 +1,11 @@
 package de.julesfehr.tinytask.tinytask.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import de.julesfehr.tinytask.domain.Task;
 import de.julesfehr.tinytask.domain.User;
 import de.julesfehr.tinytask.repository.TaskRepository;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -13,14 +13,13 @@ import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@AutoConfigureTestDatabase(replace = NONE)
 @DataJpaTest
+@AutoConfigureEmbeddedDatabase
 public class TaskRepositoryTest {
 
   @Autowired
