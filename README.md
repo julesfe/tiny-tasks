@@ -43,7 +43,7 @@ This project uses [gitmoji](https://gitmoji.carloscuesta.me/) for commit-message
 
 Whenever you add a new feature that's worth commiting, commit. 
 You added a working method? Commit. You fixed a typo? Commit. 
-You fixed a file wrong indentation? Commit. 
+You fixed a file's wrong indentation? Commit. 
 There's nothing wrong commiting small changes, 
 as soon as the commit is relevant.
 
