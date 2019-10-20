@@ -42,8 +42,8 @@ public class Task {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
-    name = "username",
-    referencedColumnName = "username"
+    name = "userid",
+    referencedColumnName = "id"
   )
   private User user;
 

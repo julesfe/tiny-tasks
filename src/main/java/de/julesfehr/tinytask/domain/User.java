@@ -36,10 +36,6 @@ public class User implements Serializable {
   @NotEmpty(message = "Please provide an email")
   private String email;
 
-  @Column(name = "username")
-  @NotEmpty(message = "Please provide a username")
-  private String username;
-
   @Column(name = "password")
   private String password;
 

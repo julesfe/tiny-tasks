@@ -31,7 +31,7 @@ public class UserRepositoryTest {
   @Test
   public void should_return_user_entity_for_given_user() {
     Task task = givenTask(new Task(null, "taskName", Instant.now()));
-    User user = new User(123, "test@testmail.de", "testUser", "hunter2", null);
+    User user = new User(123, "test@testmail.de","hunter2", null);
     user = givenUser(user);
     task = givenTask(task);
     testEntityManager.find(Task.class, task.getId())
@@ -39,7 +39,7 @@ public class UserRepositoryTest {
     testEntityManager.find(User.class, user.getId())
       .setTasks(Arrays.asList(testEntityManager.find(Task.class, task.getId())));
 
-    Optional<User> result = userRepository.findByUsername(user.getUsername());
+    Optional<User> result = userRepository.findByEmail(user.getEmail());
 
     assertThat(result).isEqualTo(Optional.of(user));
   }
