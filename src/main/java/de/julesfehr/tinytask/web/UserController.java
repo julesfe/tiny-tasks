@@ -58,7 +58,7 @@ public class UserController {
   @PostMapping("/login")
   public boolean login(@RequestBody User user) {
     log.debug("login User {}", user);
-    return userService.findByUsername(user.getUsername()).getPassword().equals(user.getPassword());
+    return userService.findByEmail(user.getEmail()).getPassword().equals(user.getPassword());
   }
 
   @GetMapping

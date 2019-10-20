@@ -29,21 +29,22 @@ public class UserServiceTest {
   private UserRepository userRepository;
 
   @Test
-  public void should_return_user_for_given_user() {
+  public void should_return_user_when_searching_by_email() {
     Task task = mock(Task.class);
-    given(userRepository.findByUsername(anyString()))
+    String email = "test@testmail.de";
+    given(userRepository.findByEmail(anyString()))
       .willReturn(
-        Optional.of(new User(123, "test@testmail.de", "test", "hunter2", Arrays.asList(task))));
+        Optional.of(new User(123, email, "hunter2", Arrays.asList(task))));
 
-    User result = userService.findByUsername("test");
+    User result = userService.findByEmail(email);
 
     assertThat(result)
-      .isEqualTo(new User(123, "test@testmail.de", "test", "hunter2", Arrays.asList(task)));
+      .isEqualTo(new User(123, email, "hunter2", Arrays.asList(task)));
   }
 
   @Test
   public void should_save_user() {
-    User user = new User(123, "test@testmail.de", "test", "hunter2", null);
+    User user = new User(123, "test@testmail.de", "hunter2", null);
 
     userService.saveUser(user);
 
@@ -51,7 +52,7 @@ public class UserServiceTest {
   }
 
   public void should_return_null_when_user_is_not_found() {
-    given(userRepository.findByUsername(anyString()))
+    given(userRepository.findByEmail(anyString()))
       .willReturn(Optional.empty());
 
     User result = userService.findByEmail("testUser");

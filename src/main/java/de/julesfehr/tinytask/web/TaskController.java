@@ -5,7 +5,6 @@ import de.julesfehr.tinytask.dto.TaskResponse;
 import de.julesfehr.tinytask.service.TaskService;
 import de.julesfehr.tinytask.service.UserService;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ public class TaskController {
   @PostMapping
   public TaskResponse createTask(@RequestBody @Valid TaskRequest taskRequest) {
     log.debug("createTask(createTask={})", taskRequest);
-    taskRequest.setUser(userService.findByUsername(taskRequest.getUser().getUsername()));
+    taskRequest.setUser(userService.findByEmail(taskRequest.getUser().getEmail()));
     return taskService.createTask(taskRequest);
   }
 
@@ -43,10 +42,10 @@ public class TaskController {
     return taskService.getTasks();
   }
 
-  @GetMapping(path = "/{username}")
-  public List<TaskResponse> getTasksByUsername(@PathVariable String username) {
-    log.debug("getTasks() for user {}", username);
-    return taskService.getTasksByUsername(username);
+  @GetMapping(path = "/{email}")
+  public List<TaskResponse> getTasksByEmail(@PathVariable String email) {
+    log.debug("getTasks() for user {}", email);
+    return taskService.getTasksByEmail(email);
   }
 
   @ResponseStatus(HttpStatus.OK)
