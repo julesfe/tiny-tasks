@@ -40,8 +40,10 @@ Run `./gradlew test` to execute the tests.
 ### Commits
 
 This project uses [gitmoji](https://gitmoji.carloscuesta.me/) for commit-messages.
+Commits that did not use gitmoji but were visible on the repository frontpage were renamed
+via `git rebase -i --root.
 
-Whenever you add a new feature that's worth commiting, commit. 
+Whenever you add a new feature that's worth co`mmiting, commit. 
 You added a working method? Commit. You fixed a typo? Commit. 
 You fixed a file's wrong indentation? Commit. 
 There's nothing wrong commiting small changes, 
