@@ -85,12 +85,12 @@ public class DefaultTaskServiceTest {
     List<Task> tasks = Arrays.asList(task);
     User user = new User(123, "test@testmail.de", "hunter2", tasks);
     when(taskRepository.findAllTasksByUser(user)).thenReturn(Optional.of(tasks));
-    given(userRepository.findByEmail("test"))
+    given(userRepository.findByEmail("test@testmail.de"))
       .willReturn(Optional.of(new User(123, "test@testmail.de", "hunter2", tasks)));
     when(mapperFacade.map(task, TaskResponse.class)).thenReturn(taskResponse);
 
     // when
-    List<TaskResponse> actualTasks = objectUnderTest.getTasksByEmail("test");
+    List<TaskResponse> actualTasks = objectUnderTest.getTasksByEmail("test@testmail.de");
 
     // then
     assertThat(actualTasks).contains(taskResponse);

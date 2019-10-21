@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {ChangeDetectionStrategy, Component, EventEmitter, Inject, Output} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import { Task } from '../task';
-import { TaskService } from '../task.service';
+import {Task} from '../task';
+import {TaskService} from '../task.service';
 import {AuthService} from "app/login/auth/auth.service";
 
 /**
@@ -26,7 +26,7 @@ export class TaskFormComponent {
               @Inject('AuthService') private authService: AuthService) { }
 
   onSubmit(): void {
-    this.taskService.create(this.taskForm.value.name, this.authService.user.username).subscribe(task => {
+    this.taskService.create(this.taskForm.value.name, this.authService.user.email).subscribe(task => {
       this.created.emit(task);
       this.taskForm.reset();
     });

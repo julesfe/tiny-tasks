@@ -12,7 +12,7 @@ export class AuthService {
   }
 
   user: {
-    username: string
+    email: string
   };
 
   public logout() {

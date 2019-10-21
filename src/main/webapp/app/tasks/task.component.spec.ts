@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { of } from 'rxjs';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {of} from 'rxjs';
 
-import { TaskComponent } from './task.component';
-import { TaskService } from './task.service';
+import {TaskComponent} from './task.component';
+import {TaskService} from './task.service';
 
 describe('TaskComponent', () => {
   let fixture: ComponentFixture<TaskComponent>;
@@ -40,7 +40,7 @@ describe('TaskComponent', () => {
   it('should init the tasks', () => {
     // given
     const tasks$ = of([]);
-    taskService.getAllByUsername.and.returnValue(tasks$);
+    taskService.getAllByEmail.and.returnValue(tasks$);
 
     // when
     component.ngOnInit();
@@ -52,26 +52,26 @@ describe('TaskComponent', () => {
   it('should reload the tasks after task creation', () => {
     // given
     const tasks$ = of([]);
-    taskService.getAllByUsername.and.returnValue(tasks$);
+    taskService.getAllByEmail.and.returnValue(tasks$);
 
     // when
     component.created();
 
     // then
     expect(component.tasks$).toEqual(tasks$);
-    expect(taskService.getAllByUsername).toHaveBeenCalled();
+    expect(taskService.getAllByEmail).toHaveBeenCalled();
   });
 
   it('should reload the tasks after task deletion', () => {
     // given
     const tasks$ = of([]);
-    taskService.getAllByUsername.and.returnValue(tasks$);
+    taskService.getAllByEmail.and.returnValue(tasks$);
 
     // when
     component.deleted();
 
     // then
     expect(component.tasks$).toEqual(tasks$);
-    expect(taskService.getAllByUsername).toHaveBeenCalled();
+    expect(taskService.getAllByEmail).toHaveBeenCalled();
   });
 });

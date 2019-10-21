@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { Task } from 'app/tasks/task';
+import {Task} from 'app/tasks/task';
 
 /**
  * Service interface for implementations that handle tiny tasks.
@@ -12,7 +12,7 @@ export interface TaskService {
    *
    * @returns an `Observable` holding the list of tasks
    */
-  getAllByUsername(username: string): Observable<Task[]>;
+  getAllByEmail(email: string): Observable<Task[]>;
 
   /**
    * Adds a new task to the list of tasks.
@@ -20,7 +20,7 @@ export interface TaskService {
    * @param name the task's name
    * @returns an `Observable` holding the created task
    */
-  create(name: string, username: string): Observable<Task>;
+  create(name: string, email: string): Observable<Task>;
 
   /**
    * Removes the task with the given ID from the list of tasks.

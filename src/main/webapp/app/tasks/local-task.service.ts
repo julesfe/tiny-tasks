@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { v4 as uuid } from 'uuid';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {v4 as uuid} from 'uuid';
 
-import { Task } from './task';
-import { TaskService } from './task.service';
+import {Task} from './task';
+import {TaskService} from './task.service';
 
 @Injectable()
 export class LocalTaskService implements TaskService {
 
   private static readonly STORAGE_KEY: string = 'tiny.tasks';
 
-  getAllByUsername(): Observable<Task[]> {
+  getAllByEmail(): Observable<Task[]> {
     return of(this.readTasks());
   }
 
-  create(name: string, username: string): Observable<Task> {
+  create(name: string, email: string): Observable<Task> {
     const tasks = this.readTasks();
-    const task = {id: uuid(), name, user: {username}};
+    const task = {id: uuid(), name, user: {email: email}};
     tasks.push(task);
     this.writeTasks(tasks);
     return of(task);
