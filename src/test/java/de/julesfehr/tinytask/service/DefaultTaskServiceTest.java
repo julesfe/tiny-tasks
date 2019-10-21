@@ -78,7 +78,7 @@ public class DefaultTaskServiceTest {
 
 
   @Test
-  public void should_get_tasks_by_username() {
+  public void should_get_tasks_by_email() {
     // given
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
