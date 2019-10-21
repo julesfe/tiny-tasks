@@ -66,3 +66,8 @@ Thumbs.db
 
 ### Docker Volumes ###
 /postgres
+
+### git-secret ###
+.gitsecret/keys/random_seed
+!*.secret
+tiny-tasks-env

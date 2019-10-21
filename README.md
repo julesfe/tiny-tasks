@@ -53,4 +53,8 @@ Making small commits allows you to use very powerful tools like git-bisect.
 
 [GitHub Actions (beta)](https://github.com/features/actions)
 
+### Passwords, API-Keys
+
+[git-secret](https://git-secret.io/)
+
 ### [To-Do](https://github.com/mindsmash/tiny-tasks/issues)
