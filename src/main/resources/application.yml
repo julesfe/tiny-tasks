@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/tiny_task
     username: tiny_task
-    password: $(TINY_TASK_DB_PW)
+    password: ${TINY_TASK_DB_PW}
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
