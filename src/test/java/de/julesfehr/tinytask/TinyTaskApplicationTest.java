@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask;
+package de.julesfehr.tinytask;
 
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;

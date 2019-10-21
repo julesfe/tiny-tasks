@@ -1,8 +1,7 @@
-package de.julesfehr.tinytask.tinytask.web;
+package de.julesfehr.tinytask.web;
 
-import de.julesfehr.tinytask.repository.UserRepository;
-import de.julesfehr.tinytask.service.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.julesfehr.tinytask.service.TaskService;
 import de.julesfehr.tinytask.service.UserService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

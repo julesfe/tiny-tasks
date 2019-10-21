@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask.web;
+package de.julesfehr.tinytask.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;

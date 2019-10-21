@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask.web;
+package de.julesfehr.tinytask.web;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;

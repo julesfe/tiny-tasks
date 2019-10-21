@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask.service;
+package de.julesfehr.tinytask.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -14,7 +14,6 @@ import de.julesfehr.tinytask.dto.TaskResponse;
 import de.julesfehr.tinytask.exception.TaskNotFoundException;
 import de.julesfehr.tinytask.repository.TaskRepository;
 import de.julesfehr.tinytask.repository.UserRepository;
-import de.julesfehr.tinytask.service.DefaultTaskService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
