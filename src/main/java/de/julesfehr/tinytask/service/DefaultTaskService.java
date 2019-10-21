@@ -12,19 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Component
-@RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DefaultTaskService implements TaskService {
 
+  @NonNull
   private final TaskRepository taskRepository;
+
+  @NonNull
   private final UserRepository userRepository;
+
+  @NonNull
   private final MapperFacade mapperFacade;
 
   @Override
@@ -49,7 +56,7 @@ public class DefaultTaskService implements TaskService {
     Optional<List<Task>> tasks = taskRepository
       .findAllTasksByUser(userRepository.findByEmail(email).orElseThrow(
         EntityNotFoundException::new));
-    return tasks.orElse(new ArrayList<Task>())
+    return tasks.orElse(new ArrayList<>())
       .stream().map(this::transformToResponse).collect(toList());
   }
 
