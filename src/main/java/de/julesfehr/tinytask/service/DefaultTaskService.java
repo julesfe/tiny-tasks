@@ -7,11 +7,9 @@ import de.julesfehr.tinytask.dto.TaskRequest;
 import de.julesfehr.tinytask.dto.TaskResponse;
 import de.julesfehr.tinytask.exception.TaskNotFoundException;
 import de.julesfehr.tinytask.repository.TaskRepository;
-import de.julesfehr.tinytask.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,7 @@ public class DefaultTaskService implements TaskService {
   private final TaskRepository taskRepository;
 
   @NonNull
-  private final UserRepository userRepository;
+  private final UserService userService;
 
   @NonNull
   private final MapperFacade mapperFacade;
@@ -54,8 +52,7 @@ public class DefaultTaskService implements TaskService {
   public List<TaskResponse> getTasksByEmail(String email) {
     log.debug("getTasks for user with email {}", email);
     Optional<List<Task>> tasks = taskRepository
-      .findAllTasksByUser(userRepository.findByEmail(email).orElseThrow(
-        EntityNotFoundException::new));
+      .findAllTasksByUser(userService.findByEmail(email));
     return tasks.orElse(new ArrayList<>())
       .stream().map(this::transformToResponse).collect(toList());
   }

@@ -31,7 +31,7 @@ public class UserServiceTest {
   public void should_return_user_when_searching_by_email() {
     Task task = mock(Task.class);
     String email = "test@testmail.de";
-    given(userRepository.findByEmail(anyString()))
+    given(userRepository.findByEmail(email))
       .willReturn(
         Optional.of(new User(123, email, "hunter2", Arrays.asList(task))));
 
