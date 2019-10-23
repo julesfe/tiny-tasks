@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask.web;
+package de.julesfehr.tinytask.web;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -29,15 +29,15 @@ export class TaskComponent implements OnInit {
     this.now$ = timer((60 - new Date().getSeconds()) * 1000, 60 * 1000)
     .pipe(startWith(0))
     .pipe(map(() => new Date()));
-    this.tasks$ = this.taskService.getAllByUsername(this.authService.user.username);
+    this.tasks$ = this.taskService.getAllByEmail(this.authService.user.email);
   }
 
   created(): void {
-    this.tasks$ = this.taskService.getAllByUsername(this.authService.user.username);
+    this.tasks$ = this.taskService.getAllByEmail(this.authService.user.email);
   }
 
   deleted(): void {
-    this.tasks$ = this.taskService.getAllByUsername(this.authService.user.username);
+    this.tasks$ = this.taskService.getAllByEmail(this.authService.user.email);
   }
 
   logout(): void {

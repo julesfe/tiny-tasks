@@ -13,7 +13,7 @@ import {AuthService} from "app/login/auth/auth.service";
 export class LoginComponent implements OnInit {
 
   @Input() form: FormGroup = new FormGroup({
-    username: new FormControl(''),
+    email: new FormControl(''),
     password: new FormControl(''),
   });
 
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit(): void {
     sessionStorage.setItem('token', '');
-    this.authService.user = {username: ''};
+    this.authService.user = {email: ''};
   }
 
   public submit() {
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
     const url = 'http://localhost:8080/login';
     this.httpClient.post<Observable<boolean>>(url, this.form.value).subscribe(loginSuccess => {
       if (loginSuccess) {
-        sessionStorage.setItem('token', this.base64EncodeUsernameAndPassword());
-        this.authService.user.username = this.form.get('username').value;
+        sessionStorage.setItem('token', this.base64EncodeEmailAndPassword());
+        this.authService.user.email = this.form.get('email').value;
         this.router.navigate(['/tasks']);
       } else {
         alert('Login failed.');
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private base64EncodeUsernameAndPassword() {
-    return btoa(this.form.get('username').value + ':' + this.form.get('password').value);
+  private base64EncodeEmailAndPassword() {
+    return btoa(this.form.get('email').value + ':' + this.form.get('password').value);
   }
 }

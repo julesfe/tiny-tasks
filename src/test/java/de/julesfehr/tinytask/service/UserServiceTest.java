@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask.service;
+package de.julesfehr.tinytask.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verify;
 import de.julesfehr.tinytask.domain.Task;
 import de.julesfehr.tinytask.domain.User;
 import de.julesfehr.tinytask.repository.UserRepository;
-import de.julesfehr.tinytask.service.UserService;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class UserServiceTest {
   public void should_return_user_when_searching_by_email() {
     Task task = mock(Task.class);
     String email = "test@testmail.de";
-    given(userRepository.findByEmail(anyString()))
+    given(userRepository.findByEmail(email))
       .willReturn(
         Optional.of(new User(123, email, "hunter2", Arrays.asList(task))));
 

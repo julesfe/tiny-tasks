@@ -2,8 +2,6 @@ package de.julesfehr.tinytask.domain;
 
 import java.time.Instant;
 import java.util.Objects;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -26,7 +24,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Access(AccessType.FIELD)
 public class Task {
 
   @Id
@@ -35,9 +32,11 @@ public class Task {
   @Column(name = "id", nullable = false, updatable = false)
   private String id;
 
+  @Column
   private String name;
 
   @CreatedDate
+  @Column
   private Instant created;
 
   @ManyToOne(fetch = FetchType.LAZY)

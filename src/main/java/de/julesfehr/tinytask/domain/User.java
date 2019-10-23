@@ -2,8 +2,6 @@ package de.julesfehr.tinytask.domain;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Access(AccessType.FIELD)
 public class User implements Serializable {
 
   @Id

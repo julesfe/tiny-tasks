@@ -1,4 +1,4 @@
-package de.julesfehr.tinytask.tinytask.service;
+package de.julesfehr.tinytask.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -13,8 +13,6 @@ import de.julesfehr.tinytask.dto.TaskRequest;
 import de.julesfehr.tinytask.dto.TaskResponse;
 import de.julesfehr.tinytask.exception.TaskNotFoundException;
 import de.julesfehr.tinytask.repository.TaskRepository;
-import de.julesfehr.tinytask.repository.UserRepository;
-import de.julesfehr.tinytask.service.DefaultTaskService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +34,13 @@ public class DefaultTaskServiceTest {
   private TaskRepository taskRepository;
 
   @Mock
-  private UserRepository userRepository;
+  private UserService userService;
 
   @Mock
   private MapperFacade mapperFacade;
 
   @InjectMocks
-  private DefaultTaskService objectUnderTest;
+  private DefaultTaskService taskService;
 
   @Test
   public void should_create_task() {
@@ -52,11 +50,11 @@ public class DefaultTaskServiceTest {
     Task savedTask = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
     doReturn(task).when(mapperFacade).map(taskRequest, Task.class);
-    when(taskRepository.save(task)).thenReturn(savedTask);
+    given(taskRepository.save(task)).willReturn(savedTask);
     doReturn(taskResponse).when(mapperFacade).map(savedTask, TaskResponse.class);
 
     // when
-    TaskResponse actualResponse = objectUnderTest.createTask(taskRequest);
+    TaskResponse actualResponse = taskService.createTask(taskRequest);
 
     // then
     assertThat(actualResponse).isEqualTo(taskResponse);
@@ -67,11 +65,11 @@ public class DefaultTaskServiceTest {
     // given
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
-    when(taskRepository.findAll()).thenReturn(Arrays.asList(task));
+    given(taskRepository.findAll()).willReturn(Arrays.asList(task));
     when(mapperFacade.map(task, TaskResponse.class)).thenReturn(taskResponse);
 
     // when
-    List<TaskResponse> actualTasks = objectUnderTest.getTasks();
+    List<TaskResponse> actualTasks = taskService.getTasks();
 
     // then
     assertThat(actualTasks).contains(taskResponse);
@@ -79,19 +77,19 @@ public class DefaultTaskServiceTest {
 
 
   @Test
-  public void should_get_tasks_by_username() {
+  public void should_get_tasks_by_email() {
     // given
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
     List<Task> tasks = Arrays.asList(task);
     User user = new User(123, "test@testmail.de", "hunter2", tasks);
     when(taskRepository.findAllTasksByUser(user)).thenReturn(Optional.of(tasks));
-    given(userRepository.findByEmail("test"))
-      .willReturn(Optional.of(new User(123, "test@testmail.de", "hunter2", tasks)));
+    given(userService.findByEmail("test@testmail.de"))
+      .willReturn(new User(123, "test@testmail.de", "hunter2", tasks));
     when(mapperFacade.map(task, TaskResponse.class)).thenReturn(taskResponse);
 
     // when
-    List<TaskResponse> actualTasks = objectUnderTest.getTasksByEmail("test");
+    List<TaskResponse> actualTasks = taskService.getTasksByEmail("test@testmail.de");
 
     // then
     assertThat(actualTasks).contains(taskResponse);
@@ -105,7 +103,7 @@ public class DefaultTaskServiceTest {
     when(taskRepository.findById(id)).thenReturn(Optional.of(task));
 
     // when
-    objectUnderTest.deleteTask(id);
+    taskService.deleteTask(id);
 
     // then
     verify(taskRepository).delete(task);
@@ -117,7 +115,7 @@ public class DefaultTaskServiceTest {
     String id = "task-id";
 
     // when
-    objectUnderTest.deleteTask(id);
+    taskService.deleteTask(id);
 
     // then
     // -- see exception of test annotation
