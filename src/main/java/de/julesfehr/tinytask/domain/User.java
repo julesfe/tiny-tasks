@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,12 +16,14 @@ import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
 
   @Id
@@ -39,6 +42,12 @@ public class User implements Serializable {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Task> tasks;
 
+  @Column(name = "confirmation_token")
+  private String confirmationToken;
+
+  @Column(name = "enabled")
+  private boolean enabled;
+
   public void removeTask(Task task) {
     // prevent endless loop
     if (!tasks.contains(task)) {
@@ -47,4 +56,5 @@ public class User implements Serializable {
     tasks.remove(task);
     task.setUser(null);
   }
+
 }

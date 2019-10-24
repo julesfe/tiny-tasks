@@ -1,6 +1,7 @@
 package de.julesfehr.tinytask.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.julesfehr.tinytask.helper.UUIDGeneratorHelper;
 import de.julesfehr.tinytask.service.EmailService;
 import de.julesfehr.tinytask.service.TaskService;
 import de.julesfehr.tinytask.service.UserService;
@@ -33,5 +34,8 @@ abstract public class BaseControllerTest {
 
   @MockBean
   protected BCryptPasswordEncoder bCryptPasswordEncoder;
+
+  @MockBean
+  protected UUIDGeneratorHelper uuidGenerator;
 
 }

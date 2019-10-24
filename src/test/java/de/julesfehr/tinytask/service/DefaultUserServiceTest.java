@@ -31,30 +31,48 @@ public class DefaultUserServiceTest {
   public void should_return_user_when_searching_by_email() {
     Task task = mock(Task.class);
     String email = "test@testmail.de";
-    given(userRepository.findByEmail(email))
-      .willReturn(
-        Optional.of(new User(123, email, "hunter2", Arrays.asList(task))));
+    User user = new User(123, email, "hunter2", Arrays.asList(task), "", true);
+    given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
 
     User result = userService.findByEmail(email);
 
-    assertThat(result).isEqualTo(new User(123, email, "hunter2", Arrays.asList(task)));
+    assertThat(result).isEqualTo(user);
   }
 
   @Test
   public void should_save_user() {
-    User user = new User(123, "test@testmail.de", "hunter2", null);
+    User user = new User(123, "test@testmail.de", "hunter2", null, "", false);
 
     userService.saveUser(user);
 
     verify(userRepository, times(1)).save(user);
   }
 
+  @Test
   public void should_return_null_when_user_is_not_found() {
-    given(userRepository.findByEmail(anyString()))
-      .willReturn(Optional.empty());
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
     User result = userService.findByEmail("testUser");
 
     assertThat(result).isEqualTo(null);
+  }
+
+  @Test
+  public void should_return_false_when_token_is_not_in_use() {
+    given(userRepository.findByConfirmationToken(anyString())).willReturn(Optional.empty());
+
+    boolean result = userService.checkForDuplicate("TestUUID1234");
+
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void should_return_true_when_token_is_in_use() {
+    User user = mock(User.class);
+    given(userRepository.findByConfirmationToken(anyString())).willReturn(Optional.of(user));
+
+    boolean result = userService.checkForDuplicate("TestUUID1234");
+
+    assertThat(result).isTrue();
   }
 }

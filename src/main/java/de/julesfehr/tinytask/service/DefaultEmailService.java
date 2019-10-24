@@ -37,7 +37,6 @@ public class DefaultEmailService implements EmailService {
     message.setTo(user.getEmail());
     message.setFrom(CONFIRMATION_MAIL_FROM);
     message.setSubject(CONFIRMATION_MAIL_SUBJECT);
-    message.setText(CONFIRMATION_MAIL_TEXT + url + "/confirm?token=");
-//      + user.getConfirmationToken());
+    message.setText(CONFIRMATION_MAIL_TEXT + url + "/confirm?token=" + user.getConfirmationToken());
   }
 }

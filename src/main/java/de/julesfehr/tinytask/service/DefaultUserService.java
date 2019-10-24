@@ -14,12 +14,19 @@ public class DefaultUserService implements UserService {
   @NonNull
   private final UserRepository userRepository;
 
+  @Override
   public User findByEmail(String email) {
     return userRepository.findByEmail(email).orElse(null);
   }
 
+  @Override
   public void saveUser(User user) {
     userRepository.save(user);
+  }
+
+  @Override
+  public boolean checkForDuplicate(String token) {
+    return userRepository.findByConfirmationToken(token).isPresent();
   }
 
 }

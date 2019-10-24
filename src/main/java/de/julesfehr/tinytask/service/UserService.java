@@ -8,4 +8,5 @@ public interface UserService {
 
   void saveUser(User user);
 
+  boolean checkForDuplicate(String token);
 }

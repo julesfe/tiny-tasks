@@ -78,10 +78,9 @@ public class DefaultTaskServiceTest {
     Task task = mock(Task.class);
     TaskResponse taskResponse = mock(TaskResponse.class);
     List<Task> tasks = Arrays.asList(task);
-    User user = new User(123, "test@testmail.de", "hunter2", tasks);
+    User user = new User(123, "test@testmail.de", "hunter2", tasks, "", true);
     when(taskRepository.findAllTasksByUser(user)).thenReturn(Optional.of(tasks));
-    given(userService.findByEmail("test@testmail.de"))
-      .willReturn(new User(123, "test@testmail.de", "hunter2", tasks));
+    given(userService.findByEmail("test@testmail.de")).willReturn(user);
     when(mapperFacade.map(task, TaskResponse.class)).thenReturn(taskResponse);
 
     // when

@@ -1,6 +1,7 @@
 package de.julesfehr.tinytask.web;
 
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.helper.UUIDGeneratorHelper;
 import de.julesfehr.tinytask.service.EmailService;
 import de.julesfehr.tinytask.service.UserService;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,9 @@ public class UserController {
 
   @NonNull
   private final PasswordEncoder passwordEncoder;
+
+  @NonNull
+  private final UUIDGeneratorHelper uuidGenerator;
 
   @NonNull
   private final UserService userService;
@@ -81,8 +85,18 @@ public class UserController {
   }
 
   private void sendConfirmationMail(@Valid User user, HttpServletRequest request) {
+    setConfirmationToken(user);
     String url = request.getScheme() + "//" + request.getServerName();
     emailService.sendConfirmationMail(user, url);
+  }
+
+  private void setConfirmationToken(@Valid User user) {
+    String token = uuidGenerator.generateId().toString();
+    if (userService.checkForDuplicate(token)) {
+      setConfirmationToken(user);
+    } else {
+      user.setConfirmationToken(token);
+    }
   }
 
   private void addConfirmationMessageToModel(ModelAndView modelAndView) {
