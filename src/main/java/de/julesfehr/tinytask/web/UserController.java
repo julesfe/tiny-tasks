@@ -1,7 +1,9 @@
 package de.julesfehr.tinytask.web;
 
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.service.EmailService;
 import de.julesfehr.tinytask.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,9 @@ public class UserController {
   @NonNull
   private final UserService userService;
 
+  @NonNull
+  private final EmailService emailService;
+
   @GetMapping("/register")
   public ModelAndView showRegistrationForm(ModelAndView modelAndView, User user) {
     log.debug("showing registration form for");
@@ -38,24 +43,21 @@ public class UserController {
 
   @PostMapping("/register")
   public ModelAndView submitRegistrationForm(ModelAndView modelAndView, @Valid User user,
-    BindingResult bindingResult) {
+    BindingResult bindingResult, HttpServletRequest request) {
     log.debug("processing registration form for user {}", user.getEmail());
 
     User userEntity = userService.findByEmail(user.getEmail());
     if (userEntity != null) {
       log.debug("user {} already exists", userEntity.getEmail());
-      modelAndView.addObject("userExistsMessage", "A user with that email already exists.");
-      modelAndView.setViewName(REGISTER);
+      addUserExistsMessageToModel(modelAndView);
       bindingResult.reject("userExists");
     }
     if (bindingResult.hasErrors()) {
       modelAndView.setViewName(REGISTER);
     } else {
-      log.debug("saving user {}", user);
       userService.saveUser(user);
-      modelAndView.addObject("confirmationMessage",
-        "Registration successful!");
-      modelAndView.setViewName(REGISTER);
+      sendConfirmationMail(user, request);
+      addConfirmationMessageToModel(modelAndView);
       log.debug("user {} completed the registration process", user.getEmail());
     }
     return modelAndView;
@@ -71,5 +73,21 @@ public class UserController {
     ("/confirm")
   public void confirm(@RequestBody User user) {
     log.debug("confirming User {}", user);
+  }
+
+  private void addUserExistsMessageToModel(ModelAndView modelAndView) {
+    modelAndView.addObject("userExistsMessage", "A user with that email already exists.");
+    modelAndView.setViewName(REGISTER);
+  }
+
+  private void sendConfirmationMail(@Valid User user, HttpServletRequest request) {
+    String url = request.getScheme() + "//" + request.getServerName();
+    emailService.sendConfirmationMail(user, url);
+  }
+
+  private void addConfirmationMessageToModel(ModelAndView modelAndView) {
+    modelAndView.addObject("confirmationMessage",
+      "Registration successful! Please check your emails to confirm your registration.");
+    modelAndView.setViewName(REGISTER);
   }
 }

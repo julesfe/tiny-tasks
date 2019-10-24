@@ -15,26 +15,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = Throwable.class)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class DefaultEmailService implements EmailService{
+public class DefaultEmailService implements EmailService {
 
   @NonNull
   private final JavaMailSender mailSender;
 
   private static final String CONFIRMATION_MAIL_FROM = "TinyTasksApplication@gmail.com";
   private static final String CONFIRMATION_MAIL_SUBJECT = "Tiny Tasks E-Mail Confirmation";
-  private static final String CONFIRMATION_MAIL_TEXT = "Tiny Tasks E-Mail Confirmation";
+  private static final String CONFIRMATION_MAIL_TEXT = "To confirm your e-mail address, please click the link below:\n";
 
   @Async
   @Override
-  public void sendConfirmationMail(User user) {
+  public void sendConfirmationMail(User user, String url) {
+    log.debug("sendConfirmationMail() for user {}", user.getEmail());
     SimpleMailMessage message = new SimpleMailMessage();
+    setMessageData(user, url, message);
+    mailSender.send(message);
+  }
+
+  private void setMessageData(User user, String url, SimpleMailMessage message) {
     message.setTo(user.getEmail());
     message.setFrom(CONFIRMATION_MAIL_FROM);
     message.setSubject(CONFIRMATION_MAIL_SUBJECT);
-    message.setText(CONFIRMATION_MAIL_TEXT);
-
-    log.debug("sendConfirmationMail() for user {}", user.getEmail());
-
-    mailSender.send(message);
+    message.setText(CONFIRMATION_MAIL_TEXT + url + "/confirm?token=");
+//      + user.getConfirmationToken());
   }
 }

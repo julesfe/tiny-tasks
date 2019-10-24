@@ -29,7 +29,7 @@ public class DefaultEmailServiceTest {
     User user = mock(User.class);
     given(user.getEmail()).willReturn("user@testmail.de");
 
-    emailService.sendConfirmationMail(user);
+    emailService.sendConfirmationMail(user, "");
 
     verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
   }

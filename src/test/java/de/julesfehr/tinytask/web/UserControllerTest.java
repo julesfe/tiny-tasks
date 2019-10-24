@@ -64,6 +64,20 @@ public class UserControllerTest extends BaseControllerTest {
   }
 
   @Test
+  public void should_send_confirmation_email_when_user_did_not_exist_before() throws Exception {
+    String email = "test@testmail.de";
+    String password = "password";
+    User user = new User(0, email, password, null);
+    given(userService.findByEmail(any())).willReturn(null);
+
+    ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
+      .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+      .content("email=" + email + "&password=" + password));
+
+    verify(emailService, times(1)).sendConfirmationMail(user, "http//localhost");
+  }
+
+  @Test
   public void should_add_confirmation_message_to_model_when_user_has_been_saved() throws Exception {
     String email = "test@testmail.de";
     given(userService.findByEmail(any())).willReturn(null);

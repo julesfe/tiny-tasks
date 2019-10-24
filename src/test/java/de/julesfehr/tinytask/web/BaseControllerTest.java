@@ -1,6 +1,7 @@
 package de.julesfehr.tinytask.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.julesfehr.tinytask.service.EmailService;
 import de.julesfehr.tinytask.service.TaskService;
 import de.julesfehr.tinytask.service.UserService;
 import org.junit.runner.RunWith;
@@ -26,6 +27,9 @@ abstract public class BaseControllerTest {
 
   @MockBean
   protected UserService userService;
+
+  @MockBean
+  protected EmailService emailService;
 
   @MockBean
   protected BCryptPasswordEncoder bCryptPasswordEncoder;
