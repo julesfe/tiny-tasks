@@ -3,6 +3,7 @@ package de.julesfehr.tinytask.web;
 import de.julesfehr.tinytask.domain.User;
 import de.julesfehr.tinytask.service.UserService;
 import javax.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-  @Autowired
+  @NonNull
   private final PasswordEncoder passwordEncoder;
+
+  @NonNull
   private final UserService userService;
 
   @GetMapping("/register")

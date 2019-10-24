@@ -19,10 +19,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
-public class UserServiceTest {
+public class DefaultUserServiceTest {
 
   @InjectMocks
-  private UserService userService;
+  private DefaultUserService userService;
 
   @Mock
   private UserRepository userRepository;

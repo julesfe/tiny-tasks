@@ -1,24 +1,11 @@
 package de.julesfehr.tinytask.service;
 
 import de.julesfehr.tinytask.domain.User;
-import de.julesfehr.tinytask.repository.UserRepository;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UserService {
+public interface UserService {
 
-  @NonNull
-  private final UserRepository userRepository;
+  User findByEmail(String email);
 
-  public User findByEmail(String email) {
-    return userRepository.findByEmail(email).orElse(null);
-  }
+  void saveUser(User user);
 
-  public void saveUser(User user) {
-    userRepository.save(user);
-  }
 }

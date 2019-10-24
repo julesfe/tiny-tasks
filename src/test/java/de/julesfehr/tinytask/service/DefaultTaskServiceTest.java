@@ -30,7 +30,7 @@ public class DefaultTaskServiceTest {
   private TaskRepository taskRepository;
 
   @Mock
-  private UserService userService;
+  private DefaultUserService userService;
 
   @Mock
   private MapperFacade mapperFacade;

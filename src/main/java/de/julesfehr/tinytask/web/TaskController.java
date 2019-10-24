@@ -6,6 +6,7 @@ import de.julesfehr.tinytask.service.TaskService;
 import de.julesfehr.tinytask.service.UserService;
 import java.util.List;
 import javax.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TaskController {
 
+  @NonNull
   private final TaskService taskService;
 
+  @NonNull
   private final UserService userService;
 
   @PostMapping
