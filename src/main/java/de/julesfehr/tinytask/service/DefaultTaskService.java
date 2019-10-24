@@ -40,6 +40,7 @@ public class DefaultTaskService implements TaskService {
     return transformToResponse(taskRepository.save(task));
   }
 
+  @Deprecated
   @Override
   @Transactional(readOnly = true)
   public List<TaskResponse> getTasks() {
@@ -52,7 +53,7 @@ public class DefaultTaskService implements TaskService {
   public List<TaskResponse> getTasksByEmail(String email) {
     log.debug("getTasks for user with email {}", email);
     Optional<List<Task>> tasks = getTasks(email);
-    return listToTaskResponse(tasks);
+    return transformTasksToTaskResponses(tasks);
   }
 
   @Override
@@ -62,7 +63,7 @@ public class DefaultTaskService implements TaskService {
     taskRepository.delete(getTaskOrThrowException(taskId));
   }
 
-  private List<TaskResponse> listToTaskResponse(Optional<List<Task>> tasks) {
+  private List<TaskResponse> transformTasksToTaskResponses(Optional<List<Task>> tasks) {
     return tasks.orElse(new ArrayList<>()).stream().map(this::transformToResponse)
       .collect(toList());
   }
