@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
+  public static final String REGISTER = "register";
+
   @NonNull
   private final PasswordEncoder passwordEncoder;
 
@@ -30,7 +32,7 @@ public class UserController {
   public ModelAndView showRegistrationForm(ModelAndView modelAndView, User user) {
     log.debug("showing registration form for");
     modelAndView.addObject("user", user);
-    modelAndView.setViewName("register");
+    modelAndView.setViewName(REGISTER);
     return modelAndView;
   }
 
@@ -43,16 +45,17 @@ public class UserController {
     if (userEntity != null) {
       log.debug("user {} already exists", userEntity.getEmail());
       modelAndView.addObject("userExistsMessage", "A user with that email already exists.");
-      modelAndView.setViewName("register");
+      modelAndView.setViewName(REGISTER);
       bindingResult.reject("userExists");
     }
     if (bindingResult.hasErrors()) {
-      modelAndView.setViewName("register");
+      modelAndView.setViewName(REGISTER);
     } else {
       log.debug("saving user {}", user);
       userService.saveUser(user);
-      modelAndView.addObject("confirmationMessage", "Registration successful!");
-      modelAndView.setViewName("register");
+      modelAndView.addObject("confirmationMessage",
+        "Registration successful!");
+      modelAndView.setViewName(REGISTER);
       log.debug("user {} completed the registration process", user.getEmail());
     }
     return modelAndView;
