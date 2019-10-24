@@ -18,7 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class UserServiceTest {
 
   @InjectMocks
@@ -37,8 +37,7 @@ public class UserServiceTest {
 
     User result = userService.findByEmail(email);
 
-    assertThat(result)
-      .isEqualTo(new User(123, email, "hunter2", Arrays.asList(task)));
+    assertThat(result).isEqualTo(new User(123, email, "hunter2", Arrays.asList(task)));
   }
 
   @Test
