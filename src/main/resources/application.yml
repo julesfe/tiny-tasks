@@ -15,13 +15,11 @@ spring:
     port: 587
     username: TinyTasksApplication@gmail.com
     password: ${TINY_TASK_EMAIL_PW}
-    properties:
-      mail:
-        smtp:
+    protocol: smtp
+    properties.mail.smtp:
           auth: true
-          starttls:
-            enable: true
-
+          starttls.enable: true
+          ssl.trust: smtp.gmail.com
 
 logging:
   level:
