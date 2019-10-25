@@ -61,7 +61,7 @@ public class DefaultUserServiceTest {
   public void should_return_false_when_token_is_not_in_use() {
     given(userRepository.findByConfirmationToken(anyString())).willReturn(Optional.empty());
 
-    boolean result = userService.checkForDuplicate("TestUUID1234");
+    boolean result = userService.isTokenPresent("TestUUID1234");
 
     assertThat(result).isFalse();
   }
@@ -71,8 +71,30 @@ public class DefaultUserServiceTest {
     User user = mock(User.class);
     given(userRepository.findByConfirmationToken(anyString())).willReturn(Optional.of(user));
 
-    boolean result = userService.checkForDuplicate("TestUUID1234");
+    boolean result = userService.isTokenPresent("TestUUID1234");
 
     assertThat(result).isTrue();
+  }
+
+  @Test
+  public void should_return_user_when_searching_by_token() {
+    String token = "TestUUID1234";
+    User user = new User(1, "", "", null, token, false);
+    given(userRepository.findByConfirmationToken(token)).willReturn(Optional.of(user));
+
+    User result = userService.findByToken(token);
+
+    assertThat(result).isEqualTo(user);
+  }
+
+  @Test
+  public void should_enable_user_when_confirmation_token_is_correct() {
+    String token = "TestUUID1234";
+    User user = new User(1, "", "", null, token, false);
+    given(userRepository.findByConfirmationToken(token)).willReturn(Optional.of(user));
+
+    userService.enableUser(token);
+
+    assertThat(userService.findByToken(token).isEnabled()).isTrue();
   }
 }

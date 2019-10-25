@@ -6,7 +6,12 @@ public interface UserService {
 
   User findByEmail(String email);
 
+  User findByToken(String token);
+
   void saveUser(User user);
 
-  boolean checkForDuplicate(String token);
+  void enableUser(String token);
+
+  boolean isTokenPresent(String token);
+
 }
