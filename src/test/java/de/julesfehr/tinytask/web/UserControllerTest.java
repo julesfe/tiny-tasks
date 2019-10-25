@@ -38,7 +38,7 @@ public class UserControllerTest extends BaseControllerTest {
 
   @Test
   public void should_return_confirmation_page_template() throws Exception {
-    ResultActions actualResult = this.mockMvc.perform(get(PATH_CONFIRMATION));
+    ResultActions actualResult = this.mockMvc.perform(get(PATH_CONFIRMATION).param("token", ""));
 
     actualResult.andExpect(ResultMatcher.matchAll(
       view().name("confirm")));
@@ -88,7 +88,7 @@ public class UserControllerTest extends BaseControllerTest {
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .content("email=" + email + "&password=" + password));
 
-    verify(emailService, times(1)).sendConfirmationMail(user, "http//localhost");
+    verify(emailService, times(1)).sendConfirmationMail(user, "http://localhost:80");
   }
 
   @Test
