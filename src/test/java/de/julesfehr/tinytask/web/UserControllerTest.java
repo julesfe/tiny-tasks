@@ -25,6 +25,7 @@ public class UserControllerTest extends BaseControllerTest {
 
   private static final String PATH_LOGIN = "/login";
   private static final String PATH_REGISTRATION = "/register";
+  private static final String PATH_CONFIRMATION = "/confirm";
 
   @Test
   public void should_return_registration_form_template() throws Exception {
@@ -33,6 +34,14 @@ public class UserControllerTest extends BaseControllerTest {
     actualResult.andExpect(ResultMatcher.matchAll(
       model().attributeExists("user"),
       view().name("register")));
+  }
+
+  @Test
+  public void should_return_confirmation_page_template() throws Exception {
+    ResultActions actualResult = this.mockMvc.perform(get(PATH_CONFIRMATION));
+
+    actualResult.andExpect(ResultMatcher.matchAll(
+      view().name("confirm")));
   }
 
   @Test
@@ -94,6 +103,19 @@ public class UserControllerTest extends BaseControllerTest {
 
     actualResult.andExpect(ResultMatcher.matchAll(
       model().attributeExists("confirmationMessage")));
+  }
+
+  @Test
+  public void should_enable_user_when_user_has_been_saved() throws Exception {
+    String password = "hunter2";
+    String email = "test@testmail.de";
+    String token = "token";
+    User user = new User(1, email, password, null, token, false);
+    given(userService.isTokenPresent(token)).willReturn(true);
+
+    this.mockMvc.perform(get(PATH_CONFIRMATION).param("token", token));
+
+    verify(userService, times(1)).enableUser(token);
   }
 
   @Test

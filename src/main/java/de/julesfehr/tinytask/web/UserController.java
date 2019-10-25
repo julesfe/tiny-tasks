@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,6 +43,7 @@ public class UserController {
     log.debug("showing registration form for");
     modelAndView.addObject("user", user);
     modelAndView.setViewName(REGISTER);
+
     return modelAndView;
   }
 
@@ -56,6 +58,7 @@ public class UserController {
       addUserExistsMessageToModel(modelAndView);
       bindingResult.reject("userExists");
     }
+
     if (bindingResult.hasErrors()) {
       modelAndView.setViewName(REGISTER);
     } else {
@@ -64,6 +67,23 @@ public class UserController {
       addConfirmationMessageToModel(modelAndView);
       log.debug("user {} completed the registration process", user.getEmail());
     }
+
+    return modelAndView;
+  }
+
+  @GetMapping("/confirm")
+  public ModelAndView showConfirmationPage(ModelAndView modelAndView,
+    @RequestParam("token") String token) {
+
+    if (!userService.isTokenPresent(token)) {
+      modelAndView.addObject("invalidToken",
+        "Oops! It looks like your confirmation link was invalid.");
+    } else {
+      modelAndView.addObject("confirmationToken", token);
+      userService.enableUser(token);
+    }
+
+    modelAndView.setViewName("confirm");
     return modelAndView;
   }
 
@@ -73,12 +93,6 @@ public class UserController {
     return userService.findByEmail(user.getEmail()).getPassword().equals(user.getPassword());
   }
 
-  @GetMapping
-    ("/confirm")
-  public void confirm(@RequestBody User user) {
-    log.debug("confirming User {}", user);
-  }
-
   private void addUserExistsMessageToModel(ModelAndView modelAndView) {
     modelAndView.addObject("userExistsMessage", "A user with that email already exists.");
     modelAndView.setViewName(REGISTER);
@@ -86,13 +100,14 @@ public class UserController {
 
   private void sendConfirmationMail(@Valid User user, HttpServletRequest request) {
     setConfirmationToken(user);
-    String url = request.getScheme() + "//" + request.getServerName();
+    String url =
+      request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
     emailService.sendConfirmationMail(user, url);
   }
 
   private void setConfirmationToken(@Valid User user) {
     String token = uuidGenerator.generateId().toString();
-    if (userService.checkForDuplicate(token)) {
+    if (userService.isTokenPresent(token)) {
       setConfirmationToken(user);
     } else {
       user.setConfirmationToken(token);
