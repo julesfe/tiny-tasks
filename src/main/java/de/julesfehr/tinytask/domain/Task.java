@@ -32,11 +32,11 @@ public class Task {
   @Column(name = "id", nullable = false, updatable = false)
   private String id;
 
-  @Column
+  @Column(name = "name")
   private String name;
 
   @CreatedDate
-  @Column
+  @Column(name = "created")
   private Instant created;
 
   @ManyToOne(fetch = FetchType.LAZY)

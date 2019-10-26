@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import de.julesfehr.tinytask.domain.User;
+import java.util.UUID;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -24,6 +25,7 @@ public class UserControllerTest extends BaseControllerTest {
 
   private static final String PATH_LOGIN = "/login";
   private static final String PATH_REGISTRATION = "/register";
+  private static final String PATH_CONFIRMATION = "/confirm";
 
   @Test
   public void should_return_registration_form_template() throws Exception {
@@ -35,10 +37,18 @@ public class UserControllerTest extends BaseControllerTest {
   }
 
   @Test
+  public void should_return_confirmation_page_template() throws Exception {
+    ResultActions actualResult = this.mockMvc.perform(get(PATH_CONFIRMATION).param("token", ""));
+
+    actualResult.andExpect(ResultMatcher.matchAll(
+      view().name("confirm")));
+  }
+
+  @Test
   public void should_add_user_exists_message_to_model_when_user_exists() throws Exception {
     String password = "hunter2";
     String email = "test@testmail.de";
-    User user = new User(1, email, password, null);
+    User user = new User(1, email, password, null, "", true);
     given(userService.findByEmail(anyString())).willReturn(user);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
@@ -53,8 +63,10 @@ public class UserControllerTest extends BaseControllerTest {
   public void should_save_user_when_user_did_not_exist_before() throws Exception {
     String email = "test@testmail.de";
     String password = "password";
-    User user = new User(0, email, password, null);
+    UUID uuid = UUID.randomUUID();
+    User user = new User(0, email, password, null, uuid.toString(), false);
     given(userService.findByEmail(any())).willReturn(null);
+    given(uuidGenerator.generateId()).willReturn(uuid);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -64,9 +76,26 @@ public class UserControllerTest extends BaseControllerTest {
   }
 
   @Test
+  public void should_send_confirmation_email_when_user_did_not_exist_before() throws Exception {
+    String email = "test@testmail.de";
+    String password = "password";
+    UUID uuid = UUID.randomUUID();
+    User user = new User(0, email, password, null, uuid.toString(), false);
+    given(userService.findByEmail(any())).willReturn(null);
+    given(uuidGenerator.generateId()).willReturn(uuid);
+
+    ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
+      .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+      .content("email=" + email + "&password=" + password));
+
+    verify(emailService, times(1)).sendConfirmationMail(user, "http://localhost:80");
+  }
+
+  @Test
   public void should_add_confirmation_message_to_model_when_user_has_been_saved() throws Exception {
     String email = "test@testmail.de";
     given(userService.findByEmail(any())).willReturn(null);
+    given(uuidGenerator.generateId()).willReturn(UUID.randomUUID());
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -77,10 +106,23 @@ public class UserControllerTest extends BaseControllerTest {
   }
 
   @Test
+  public void should_enable_user_when_user_has_been_saved() throws Exception {
+    String password = "hunter2";
+    String email = "test@testmail.de";
+    String token = "token";
+    User user = new User(1, email, password, null, token, false);
+    given(userService.isTokenPresent(token)).willReturn(true);
+
+    this.mockMvc.perform(get(PATH_CONFIRMATION).param("token", token));
+
+    verify(userService, times(1)).enableUser(token);
+  }
+
+  @Test
   public void should_return_status_code_200_when_login_was_successful() throws Exception {
     String password = "hunter2";
     String email = "test@testmail.de";
-    User user = new User(1, email, password, null);
+    User user = new User(1, email, password, null, "", true);
     given(userService.findByEmail(anyString())).willReturn(user);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_LOGIN)

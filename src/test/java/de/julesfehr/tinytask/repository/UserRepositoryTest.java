@@ -29,7 +29,7 @@ public class UserRepositoryTest {
   @Test
   public void should_return_user_entity_for_given_user() {
     Task task = givenTask(new Task(null, "taskName", Instant.now()));
-    User user = new User(123, "test@testmail.de","hunter2", null);
+    User user = new User(123, "test@testmail.de","hunter2", null, "", true);
     user = givenUser(user);
     task = givenTask(task);
     testEntityManager.find(Task.class, task.getId())

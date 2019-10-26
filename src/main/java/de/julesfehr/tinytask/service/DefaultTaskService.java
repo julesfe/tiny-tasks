@@ -40,6 +40,7 @@ public class DefaultTaskService implements TaskService {
     return transformToResponse(taskRepository.save(task));
   }
 
+  @Deprecated
   @Override
   @Transactional(readOnly = true)
   public List<TaskResponse> getTasks() {
@@ -51,14 +52,8 @@ public class DefaultTaskService implements TaskService {
   @Transactional(readOnly = true)
   public List<TaskResponse> getTasksByEmail(String email) {
     log.debug("getTasks for user with email {}", email);
-    Optional<List<Task>> tasks = taskRepository
-      .findAllTasksByUser(userService.findByEmail(email));
-    return tasks.orElse(new ArrayList<>())
-      .stream().map(this::transformToResponse).collect(toList());
-  }
-
-  private TaskResponse transformToResponse(Task task) {
-    return mapperFacade.map(task, TaskResponse.class);
+    Optional<List<Task>> tasks = getTasks(email);
+    return transformTasksToTaskResponses(tasks);
   }
 
   @Override
@@ -66,6 +61,19 @@ public class DefaultTaskService implements TaskService {
   public void deleteTask(String taskId) {
     log.debug("deleteTask(taskId={})", taskId);
     taskRepository.delete(getTaskOrThrowException(taskId));
+  }
+
+  private List<TaskResponse> transformTasksToTaskResponses(Optional<List<Task>> tasks) {
+    return tasks.orElse(new ArrayList<>()).stream().map(this::transformToResponse)
+      .collect(toList());
+  }
+
+  private TaskResponse transformToResponse(Task task) {
+    return mapperFacade.map(task, TaskResponse.class);
+  }
+
+  private Optional<List<Task>> getTasks(String email) {
+    return taskRepository.findAllTasksByUser(userService.findByEmail(email));
   }
 
   private Task getTaskOrThrowException(String taskId) {
