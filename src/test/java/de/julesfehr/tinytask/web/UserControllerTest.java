@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.dto.UserRequest;
 import java.util.UUID;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -65,14 +66,16 @@ public class UserControllerTest extends BaseControllerTest {
     String password = "password";
     UUID uuid = UUID.randomUUID();
     User user = new User(0, email, password, null, uuid.toString(), false);
-    given(userService.findByEmail(any())).willReturn(null);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password).build();
+    given(userService.findByEmail(email)).willReturn(null);
+    given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(uuid);
 
-    ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
+    this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .content("email=" + email + "&password=" + password));
 
-    verify(userService, times(1)).saveUser(user);
+    verify(userService, times(1)).saveUser(userRequest);
   }
 
   @Test
@@ -81,7 +84,9 @@ public class UserControllerTest extends BaseControllerTest {
     String password = "password";
     UUID uuid = UUID.randomUUID();
     User user = new User(0, email, password, null, uuid.toString(), false);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password).build();
     given(userService.findByEmail(any())).willReturn(null);
+    given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(uuid);
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
@@ -94,12 +99,17 @@ public class UserControllerTest extends BaseControllerTest {
   @Test
   public void should_add_confirmation_message_to_model_when_user_has_been_saved() throws Exception {
     String email = "test@testmail.de";
+    String password = "password";
+    UUID uuid = UUID.randomUUID();
+    User user = new User(0, email, password, null, uuid.toString(), false);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password).build();
     given(userService.findByEmail(any())).willReturn(null);
+    given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(UUID.randomUUID());
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-      .content("email=" + email + "&password=x&ConfirmPassword=x"));
+      .content("email=" + email + "&password=" + password));
 
     actualResult.andExpect(ResultMatcher.matchAll(
       model().attributeExists("confirmationMessage")));

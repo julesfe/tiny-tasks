@@ -1,6 +1,7 @@
 package de.julesfehr.tinytask.service;
 
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.dto.UserRequest;
 
 public interface UserService {
 
@@ -8,7 +9,7 @@ public interface UserService {
 
   User findByToken(String token);
 
-  void saveUser(User user);
+  User saveUser(UserRequest userRequest);
 
   void enableUser(String token);
 
