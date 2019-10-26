@@ -3,12 +3,14 @@ package de.julesfehr.tinytask.service;
 import de.julesfehr.tinytask.domain.User;
 import de.julesfehr.tinytask.repository.UserRepository;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DefaultUserService implements UserService {
 
