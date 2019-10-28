@@ -9,9 +9,11 @@ import static org.mockito.Mockito.verify;
 
 import de.julesfehr.tinytask.domain.Task;
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.dto.UserRequest;
 import de.julesfehr.tinytask.repository.UserRepository;
 import java.util.Arrays;
 import java.util.Optional;
+import ma.glasnost.orika.MapperFacade;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,11 +23,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class DefaultUserServiceTest {
 
-  @InjectMocks
-  private DefaultUserService userService;
-
   @Mock
   private UserRepository userRepository;
+
+  @Mock
+  private MapperFacade mapperFacade;
+
+  @InjectMocks
+  private DefaultUserService userService;
 
   @Test
   public void should_return_user_when_searching_by_email() {
@@ -41,9 +46,14 @@ public class DefaultUserServiceTest {
 
   @Test
   public void should_save_user() {
-    User user = new User(123, "test@testmail.de", "hunter2", null, "", false);
+    String email = "test@testmail.de";
+    String password = "hunter2";
+    User user = new User(123, email, password, null, "", false);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password)
+      .build();
+    given(mapperFacade.map(userRequest, User.class)).willReturn(user);
 
-    userService.saveUser(user);
+    userService.saveUser(userRequest);
 
     verify(userRepository, times(1)).save(user);
   }

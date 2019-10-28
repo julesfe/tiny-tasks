@@ -1,6 +1,7 @@
 package de.julesfehr.tinytask.web;
 
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.dto.UserRequest;
 import de.julesfehr.tinytask.helper.UUIDGeneratorHelper;
 import de.julesfehr.tinytask.service.EmailService;
 import de.julesfehr.tinytask.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,13 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-  public static final String REGISTER = "register";
-
-  @NonNull
-  private final PasswordEncoder passwordEncoder;
-
-  @NonNull
-  private final UUIDGeneratorHelper uuidGenerator;
+  private static final String REGISTER = "register";
 
   @NonNull
   private final UserService userService;
@@ -38,23 +34,31 @@ public class UserController {
   @NonNull
   private final EmailService emailService;
 
+  @NonNull
+  private final PasswordEncoder passwordEncoder;
+
+  @NonNull
+  private final UUIDGeneratorHelper uuidGenerator;
+
   @GetMapping("/register")
-  public ModelAndView showRegistrationForm(ModelAndView modelAndView, User user) {
+  public ModelAndView showRegistrationForm(ModelAndView modelAndView, UserRequest userRequest) {
     log.debug("showing registration form for");
-    modelAndView.addObject("user", user);
+    modelAndView.addObject("user", userRequest);
     modelAndView.setViewName(REGISTER);
 
     return modelAndView;
   }
 
   @PostMapping("/register")
-  public ModelAndView submitRegistrationForm(ModelAndView modelAndView, @Valid User user,
-    BindingResult bindingResult, HttpServletRequest request) {
-    log.debug("processing registration form for user {}", user.getEmail());
+  public ModelAndView submitRegistrationForm(ModelAndView modelAndView,
+    @Valid @NonNull @ModelAttribute("user") UserRequest userRequest,
+    BindingResult bindingResult,
+    HttpServletRequest request) {
+    log.debug("processing registration form for user {}", userRequest.getEmail());
 
-    User userEntity = userService.findByEmail(user.getEmail());
-    if (userEntity != null) {
-      log.debug("user {} already exists", userEntity.getEmail());
+    User user = userService.findByEmail(userRequest.getEmail());
+    if (user != null) {
+      log.debug("userRequest {} already exists", user.getEmail());
       addUserExistsMessageToModel(modelAndView);
       bindingResult.reject("userExists");
     }
@@ -62,11 +66,11 @@ public class UserController {
     if (bindingResult.hasErrors()) {
       modelAndView.setViewName(REGISTER);
     } else {
+      user = userService.saveUser(userRequest);
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      userService.saveUser(user);
       sendConfirmationMail(user, request);
       addConfirmationMessageToModel(modelAndView);
-      log.debug("user {} completed the registration process", user.getEmail());
+      log.debug("user {} completed the registration process", userRequest.getEmail());
     }
 
     return modelAndView;
@@ -89,7 +93,7 @@ public class UserController {
   }
 
   @PostMapping("/login")
-  public boolean login(@RequestBody User user) {
+  public boolean login(@RequestBody UserRequest user) {
     log.debug("login User {}", user);
     return userService.findByEmail(user.getEmail()).getPassword().equals(user.getPassword());
   }

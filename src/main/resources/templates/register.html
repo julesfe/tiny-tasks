@@ -24,14 +24,15 @@
     <h1 class="text-center">Register now!</h1>
     <div class="col-md-4 col-md-offset-4">
 
-      <form autocomplete="off" action="#" th:action="@{/register}" th:object="${user}" method="post"
+      <form action="#" autocomplete="off" method="post" modelAttribute="user"
+            th:action="@{/register}" th:object="${user}"
             role="form">
 
         <div th:if="${userExistsMessage}" class="alert alert-danger"
-             role="alert" th:text=${userExistsMessage}></div>
+             role="alert" th:text="${userExistsMessage}"></div>
 
         <div th:if="${confirmationMessage}" class="alert alert-success"
-             role="alert" th:text=${confirmationMessage}></div>
+             role="alert" th:text="${confirmationMessage}"></div>
 
         <div class="well">
 

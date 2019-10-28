@@ -2,7 +2,6 @@ package de.julesfehr.tinytask.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import de.julesfehr.tinytask.domain.User;
+import de.julesfehr.tinytask.dto.UserRequest;
 import java.util.UUID;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -65,14 +65,17 @@ public class UserControllerTest extends BaseControllerTest {
     String email = "test@testmail.de";
     String password = "password";
     UUID uuid = UUID.randomUUID();
-    given(userService.findByEmail(any())).willReturn(null);
+    User user = new User(0, email, password, null, uuid.toString(), false);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password).build();
+    given(userService.findByEmail(email)).willReturn(null);
+    given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(uuid);
 
     this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .content("email=" + email + "&password=" + password));
 
-    verify(userService, times(1)).saveUser(any(User.class));
+    verify(userService, times(1)).saveUser(userRequest);
   }
 
   @Test
@@ -80,25 +83,33 @@ public class UserControllerTest extends BaseControllerTest {
     String email = "test@testmail.de";
     String password = "password";
     UUID uuid = UUID.randomUUID();
+    User user = new User(0, email, password, null, uuid.toString(), false);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password).build();
     given(userService.findByEmail(any())).willReturn(null);
+    given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(uuid);
 
     this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .content("email=" + email + "&password=" + password));
 
-    verify(emailService, times(1)).sendConfirmationMail(any(User.class), eq("http://localhost:80"));
+    verify(emailService, times(1)).sendConfirmationMail(user, "http://localhost:80");
   }
 
   @Test
   public void should_add_confirmation_message_to_model_when_user_has_been_saved() throws Exception {
     String email = "test@testmail.de";
+    String password = "password";
+    UUID uuid = UUID.randomUUID();
+    User user = new User(0, email, password, null, uuid.toString(), false);
+    UserRequest userRequest = UserRequest.builder().email(email).password(password).build();
     given(userService.findByEmail(any())).willReturn(null);
+    given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(UUID.randomUUID());
 
     ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-      .content("email=" + email + "&password=x&ConfirmPassword=x"));
+      .content("email=" + email + "&password=" + password));
 
     actualResult.andExpect(ResultMatcher.matchAll(
       model().attributeExists("confirmationMessage")));
