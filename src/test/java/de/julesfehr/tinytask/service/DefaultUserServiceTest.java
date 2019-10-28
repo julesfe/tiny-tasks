@@ -49,6 +49,17 @@ public class DefaultUserServiceTest {
   }
 
   @Test
+  public void should_enable_user() {
+    String token = "token";
+    User user = new User(123, "test@testmail.de", "hunter2", null, token, false);
+    given(userRepository.findByConfirmationToken(token)).willReturn(Optional.of(user));
+
+    userService.enableUser(token);
+
+    assertThat(user.isEnabled()).isTrue();
+  }
+
+  @Test
   public void should_return_null_when_user_is_not_found() {
     given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 

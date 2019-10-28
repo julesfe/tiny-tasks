@@ -62,6 +62,7 @@ public class UserController {
     if (bindingResult.hasErrors()) {
       modelAndView.setViewName(REGISTER);
     } else {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       userService.saveUser(user);
       sendConfirmationMail(user, request);
       addConfirmationMessageToModel(modelAndView);
