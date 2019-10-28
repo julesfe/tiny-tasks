@@ -29,16 +29,16 @@ public class UserController {
   private static final String REGISTER = "register";
 
   @NonNull
-  private final PasswordEncoder passwordEncoder;
-
-  @NonNull
-  private final UUIDGeneratorHelper uuidGenerator;
-
-  @NonNull
   private final UserService userService;
 
   @NonNull
   private final EmailService emailService;
+
+  @NonNull
+  private final PasswordEncoder passwordEncoder;
+
+  @NonNull
+  private final UUIDGeneratorHelper uuidGenerator;
 
   @GetMapping("/register")
   public ModelAndView showRegistrationForm(ModelAndView modelAndView, UserRequest userRequest) {
@@ -67,9 +67,10 @@ public class UserController {
       modelAndView.setViewName(REGISTER);
     } else {
       user = userService.saveUser(userRequest);
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       sendConfirmationMail(user, request);
       addConfirmationMessageToModel(modelAndView);
-      log.debug("userRequest {} completed the registration process", userRequest.getEmail());
+      log.debug("user {} completed the registration process", userRequest.getEmail());
     }
 
     return modelAndView;

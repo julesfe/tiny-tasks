@@ -89,7 +89,7 @@ public class UserControllerTest extends BaseControllerTest {
     given(userService.saveUser(userRequest)).willReturn(user);
     given(uuidGenerator.generateId()).willReturn(uuid);
 
-    ResultActions actualResult = this.mockMvc.perform(post(PATH_REGISTRATION)
+    this.mockMvc.perform(post(PATH_REGISTRATION)
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)
       .content("email=" + email + "&password=" + password));
 
@@ -117,10 +117,7 @@ public class UserControllerTest extends BaseControllerTest {
 
   @Test
   public void should_enable_user_when_user_has_been_saved() throws Exception {
-    String password = "hunter2";
-    String email = "test@testmail.de";
     String token = "token";
-    User user = new User(1, email, password, null, token, false);
     given(userService.isTokenPresent(token)).willReturn(true);
 
     this.mockMvc.perform(get(PATH_CONFIRMATION).param("token", token));
