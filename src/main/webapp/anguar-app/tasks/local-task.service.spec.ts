@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {LocalTaskService} from 'app/tasks/local-task.service';
+import {LocalTaskService} from 'anguar-app/tasks/local-task.service';
 import {Observable} from 'rxjs';
 import {Task} from './task';
 

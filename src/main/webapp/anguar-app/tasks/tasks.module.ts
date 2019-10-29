@@ -5,7 +5,7 @@ import {MatButtonModule, MatIconModule, MatInputModule, MatListModule} from '@an
 
 import {TaskFormComponent} from './task-form/task-form.component';
 import {TaskListComponent} from './task-list/task-list.component';
-import {TaskComponent} from "app/tasks/task.component";
+import {TaskComponent} from "anguar-app/tasks/task.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({

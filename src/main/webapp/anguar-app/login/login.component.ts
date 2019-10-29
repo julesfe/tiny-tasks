@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
-import {AuthService} from "app/login/auth/auth.service";
+import {AuthService} from "anguar-app/login/auth/auth.service";
 
 @Component({
   selector: 'login-component',

@@ -1,8 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from "app/login/login.component";
-import {AuthGuard} from "app/login/auth/auth.guard";
-import {TaskComponent} from "app/tasks/task.component";
+import {LoginComponent} from "anguar-app/login/login.component";
+import {TaskComponent} from "anguar-app/tasks/task.component";
 
 const routes: Routes = [
   {

@@ -1,6 +1,6 @@
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
-import {BASE_URL} from 'app/app.tokens';
+import {BASE_URL} from 'anguar-app/app.tokens';
 
 import {DefaultTaskService} from './default-task.service';
 

@@ -5,7 +5,7 @@ import {map, startWith} from 'rxjs/operators';
 import {Task} from './task';
 import {TaskService} from './task.service';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "app/login/auth/auth.service";
+import {AuthService} from "anguar-app/login/auth/auth.service";
 
 @Component({
   selector: 'task-component',

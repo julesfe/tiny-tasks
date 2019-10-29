@@ -8,11 +8,11 @@ import {BASE_URL} from './app.tokens';
 import {DefaultTaskService} from './tasks/default-task.service';
 import {LocalTaskService} from './tasks/local-task.service';
 import {TasksModule} from './tasks/tasks.module';
-import {AppRoutingModule} from "app/app-routing.module";
-import {LoginModule} from "app/login/login.module";
+import {AppRoutingModule} from "anguar-app/app-routing.module";
+import {LoginModule} from "anguar-app/login/login.module";
 import {AppComponent} from './app.component';
-import {AuthService} from "app/login/auth/auth.service";
-import {AuthGuard} from "app/login/auth/auth.guard";
+import {AuthService} from "anguar-app/login/auth/auth.service";
+import {AuthGuard} from "anguar-app/login/auth/auth.guard";
 
 @NgModule({
   declarations: [AppComponent],

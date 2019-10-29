@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 import {Task} from '../task';
 import {TaskService} from '../task.service';
-import {AuthService} from "app/login/auth/auth.service";
+import {AuthService} from "anguar-app/login/auth/auth.service";
 
 /**
  * A form to create tiny tasks.
