@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import NavComponent from "./NavComponent";
-import ListComponent from "./ListComponent";
+import TaskListComponent from "./tasks/TaskListComponent";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,7 +21,7 @@ export default function App() {
   return (
     <>
       <NavComponent/>
-      <ListComponent/>
+      <TaskListComponent/>
     </>
   );
 }

@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default class ListComponent extends PureComponent {
+export default class TaskListComponent extends PureComponent {
   render() {
     return (
       <React.Fragment>
